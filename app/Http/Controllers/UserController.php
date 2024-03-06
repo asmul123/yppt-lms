@@ -16,8 +16,7 @@ class UserController extends Controller
             'menu' => 'referensi',
             'smenu' => 'user',
             'users' => User::all(),
-            'roles' => Role::all(),
-            'no' => 1
+            'roles' => Role::all()
         ]);
     }
 
@@ -63,5 +62,11 @@ class UserController extends Controller
             User::create($validated);
             return redirect()->back()->with('success', 'User berhasil disimpan');
         }
+    }
+
+    public function destroy(User $user)
+    {
+        User::destroy($user->id);
+        return redirect()->back()->with('success', 'User berhasil dihapus');
     }
 }

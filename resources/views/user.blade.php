@@ -22,7 +22,7 @@
                                     <i data-feather="x"></i>
                                     </button>
                                 </div>
-                                <form action="/useradd" method="post">
+                                <form action="/users" method="post">
                                     @csrf
                                 <div class="modal-body">
                                         <div class="row">
@@ -108,12 +108,19 @@
                     <tbody>
                         @foreach($users as $user)
                         <tr>
-                            <td>{{ $no++ }}</td>
+                            <td>{{ $loop->iteration }}</td>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->username }}</td>
                             <td>{{ $user->role->role }}</td>
                             <td>
-                                <span class="badge bg-success">Detail</span>
+                                <div class="btn-group mb-3" role="group" aria-label="Basic example">
+                                    <a href="#" class="badge icon bg-warning"><i data-feather="edit"></i></a>
+                                    <form action="/users/{{ $user->id }}" method="post">
+                                        @method('delete')
+                                        @csrf
+                                        <button class="badge icon bg-danger border-0" onclick="return confirm('Yakin akan menghapus user ini?')"><i data-feather="trash"></i></button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                         @endforeach

@@ -36,7 +36,7 @@
                     </a>                    
                     <ul class="submenu {{ ($smenu === 'user') ? 'active' : '' }}">                        
                         <li>
-                            <i class="fa fa-users"></i><a href="/user">Data Pengguna</a>
+                            <i class="fa fa-users"></i><a href="/users">Data Pengguna</a>
                         </li>
                     </ul>
                 </li>
