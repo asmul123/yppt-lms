@@ -86,11 +86,12 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <form action="/logout" method="POST">
+                    <form action="/logout" method="POST" id="form-logout">
                         @csrf
-                        <button class="dropdown-item" type="submit">
+                        <a href="javascript:;" onclick="parentNode.submit();" class="sidebar-link">
                             <i data-feather="log-out" width="20"></i> 
-                            <span>Keluar</span></button>
+                            <span>Keluar</span>
+                        </a>
                         </form>
                     </li>
                 </ul>

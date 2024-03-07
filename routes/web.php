@@ -7,6 +7,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AllUserController;
 use App\Http\Controllers\TahunPelajaranController;
 use App\Http\Controllers\RombonganBelajarController;
+use App\Http\Controllers\PembelajaranController;
+use App\Http\Controllers\AdministrasiController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -35,3 +37,5 @@ Route::post('/users/import', [AllUserController::class, 'import'])->middleware('
 Route::resource('/users', AllUserController::class)->middleware('auth');
 Route::resource('/tahunpelajaran', TahunpelajaranController::class)->middleware('auth');
 Route::resource('/rombonganbelajar', RombonganBelajarController::class)->middleware('auth');
+Route::resource('/pembelajaran', PembelajaranController::class)->middleware('auth');
+Route::resource('/administrasi', AdministrasiController::class)->middleware('auth');

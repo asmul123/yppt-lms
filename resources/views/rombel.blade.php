@@ -107,7 +107,7 @@
                                 <div class="col-md-3 col-3">
                                     <div class="form-group">
                                             <select class="form-control" onchange="this.form.submit()" name="tapel_id">
-                                                <option value="">Filter Pengguna</option>
+                                                <option value="">Filter Rombongan Belajar</option>
                                                 @foreach ($tapels as $tapel)
                                                 <option value="{{ $tapel->id }}" {{ (request('tapel_id') == $tapel->id ? 'selected' : false) }}>{{ $tapel->tahunpelajaran }}</option>
                                                 @endforeach

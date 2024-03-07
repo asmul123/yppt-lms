@@ -63,17 +63,29 @@ class RombonganBelajarController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Rombongan $rombongan)
+    public function edit(Rombonganbelajar $rombonganbelajar)
     {
-        //
+        return view('rombeledit', [
+            'menu' => 'referensi',
+            'smenu' => 'user',
+            'rombel' => $rombonganbelajar,
+            'tapels' => Tahunpelajaran::all()
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Rombongan $rombongan)
+    public function update(Request $request, Rombonganbelajar $rombonganbelajar)
     {
-        //
+        $validated = $request->validate([
+            'rombongan_belajar' => 'required',
+            'tahunpelajaran_id' => 'required'
+        ]);
+
+        Rombonganbelajar::where('id', $rombonganbelajar->id)
+            ->update($validated);
+        return redirect(url('/rombonganbelajar'))->with('success', 'Rombel berhasil diubah');
     }
 
     /**
