@@ -9,6 +9,7 @@ use App\Http\Controllers\TahunPelajaranController;
 use App\Http\Controllers\RombonganBelajarController;
 use App\Http\Controllers\PembelajaranController;
 use App\Http\Controllers\AdministrasiController;
+use App\Http\Controllers\HakaksesController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -39,3 +40,4 @@ Route::resource('/tahunpelajaran', TahunpelajaranController::class)->middleware(
 Route::resource('/rombonganbelajar', RombonganBelajarController::class)->middleware('auth');
 Route::resource('/pembelajaran', PembelajaranController::class)->middleware('auth');
 Route::resource('/administrasi', AdministrasiController::class)->middleware('auth');
+Route::resource('/hakakses', HakaksesController::class)->middleware('auth');
