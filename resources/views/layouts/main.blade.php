@@ -86,7 +86,7 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <form action="/logout" method="POST" id="form-logout">
+                    <form action="{{ url('/') }}/logout" method="POST" id="form-logout">
                         @csrf
                         <a href="javascript:;" onclick="parentNode.submit();" class="sidebar-link">
                             <i data-feather="log-out" width="20"></i> 
