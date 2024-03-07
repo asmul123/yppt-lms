@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Role;
 use Illuminate\Http\Request;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use Illuminate\Support\Facades\Hash;
 
 class AllUserController extends Controller
 {
@@ -13,10 +15,20 @@ class AllUserController extends Controller
      */
     public function index()
     {
+        $users = User::orderBy('role_id', 'asc')->orderBy('name', 'asc');
+        if (request('role_id')) {
+            $users->where('role_id', request('role_id'));
+        }
+        if (request('search')) {
+            $users->where('name', 'like', '%' . request('search') . '%')
+                ->orWhere('username', 'like', '%' . request('search') . '%');
+        }
+
+
         return view('user', [
             'menu' => 'referensi',
             'smenu' => 'user',
-            'users' => User::all(),
+            'users' => $users->paginate(10)->withQueryString(),
             'roles' => Role::all()
         ]);
     }
@@ -29,6 +41,47 @@ class AllUserController extends Controller
         //
     }
 
+    public function import(Request $request)
+    {
+        if ($request->hasFile('excel_file')) {
+            $path = $request->file('excel_file')->getRealPath();
+
+            $spreadsheet = IOFactory::load($path);
+            $sheet = $spreadsheet->getActiveSheet();
+            $berhasil = 0;
+            $gagal = 0;
+            foreach ($sheet->getRowIterator() as $row) {
+                $cellIterator = $row->getCellIterator();
+                $cellIterator->setIterateOnlyExistingCells(false); // Loop semua sel
+
+                // Mengambil nilai dari setiap sel dalam baris
+                $data = [];
+                foreach ($cellIterator as $cell) {
+                    $data[] = $cell->getValue();
+                }
+
+                // Simpan data ke dalam database menggunakan model
+                $dataisi = ([
+                    'name' => $data[0],
+                    'username' => $data[1],
+                    'password' => Hash::make($data[2]),
+                    'role_id' => $data[3]
+                    // Tambahkan kolom lain sesuai kebutuhan
+                ]);
+                $existingUser = User::where('username', $dataisi['username'])->first();
+
+                if ($existingUser) {
+                    $gagal++;
+                } else if ($dataisi['role_id'] != 'role_id') {
+                    User::create($dataisi);
+                    $berhasil++;
+                }
+            }
+            return redirect()->back()->with('success', $berhasil . ' User berhasil disimpan ' . $gagal . ' User gagal disimpan');
+        }
+
+        return redirect()->back()->with('failed', 'Silahkan Unggah Berkas!');
+    }
     /**
      * Store a newly created resource in storage.
      */
@@ -36,7 +89,7 @@ class AllUserController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required',
-            'username' => 'required', 'unique:username',
+            'username' => 'required|unique:username',
             'password' => 'required',
             'role_id' => 'required'
         ]);
@@ -68,7 +121,12 @@ class AllUserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        return view('useredit', [
+            'menu' => 'referensi',
+            'smenu' => 'user',
+            'user' => $user,
+            'roles' => Role::all()
+        ]);
     }
 
     /**
@@ -76,7 +134,29 @@ class AllUserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required',
+            'role_id' => 'required'
+        ]);
+
+        if ($request->username != $user->username) {
+            $validated['username'] = $request->username;
+            $existingUser = User::where('username', $validated['username'])->first();
+
+            if ($existingUser) {
+                return redirect()->back()->with('failed', 'Gagal, Nama pengguna sudah ada');
+            }
+        }
+        if ($request->password !== "") {
+            if ($request->password !== $request->password_confirmation) {
+                return redirect()->back()->with('failed', 'Gagal, Konfirmasi Kata Sandi tidak sesuai');
+            } else {
+                $validated['password'] = Hash::make($request->password);
+            }
+        }
+        User::where('id', $user->id)
+            ->update($validated);
+        return redirect(url('/users'))->with('success', 'User berhasil diubah');
     }
 
     /**

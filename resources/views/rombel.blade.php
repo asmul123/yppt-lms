@@ -6,67 +6,39 @@
 <link rel="stylesheet" href="assets/vendors/simple-datatables/style.css">
 <div class="main-content container-fluid">
     <div class="page-title">
-        <h3>Daftar Pengguna</h3>
+        <h3>Daftar Rombel</h3>
     </div>
     <section class="section">
         <div class="card">
             <div class="card-header">
-                <a href="#" class="btn icon icon-left btn-primary" data-toggle="modal" data-target="#tambah-pengguna"><i data-feather="plus"></i> Tambah Pengguna</a>
+                <a href="#" class="btn icon icon-left btn-primary" data-toggle="modal" data-target="#tambah-rombel"><i data-feather="plus"></i> Tambah Rombongan Belajar</a>
                 <!--BorderLess Modal Modal -->
-                    <div class="modal fade text-left modal-borderless" id="tambah-pengguna" tabindex="-1" role="dialog" aria-labelledby="modalTambah" aria-hidden="true">
+                    <div class="modal fade text-left modal-borderless" id="tambah-rombel" tabindex="-1" role="dialog" aria-labelledby="modalTambah" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-scrollable" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title">Tambah Pengguna</h5>
+                                    <h5 class="modal-title">Tambah Rombongan Belajar</h5>
                                     <button type="button" class="close rounded-pill" data-dismiss="modal" aria-label="Close">
                                     <i data-feather="x"></i>
                                     </button>
                                 </div>
-                                <form action="/users" method="post">
+                                <form action="/rombonganbelajar" method="post">
                                     @csrf
                                 <div class="modal-body">
                                         <div class="row">
                                             <div class="col-md-12 col-12">
                                                 <div class="form-group">
                                                     <label for="first-name-column">Name</label>
-                                                    <input type="text" id="first-name-column" class="form-control @error('name') is-invalid @enderror"  name="name">
-                                                </div>
-                                                @error('name') 
-                                                <div class="invalid-feedback">
-                                                    {{ $message }}
-                                                </div>
-                                                @enderror
-                                            </div>
-                                            <div class="col-md-12 col-12">
-                                                <div class="form-group">
-                                                    <label for="username-column">Nama Pengguna</label>
-                                                    <input type="text" id="username-column" class="form-control @error('username') is-invalid @enderror" name="username">
-                                                </div>
-                                                @error('username') 
-                                                <div class="invalid-feedback">
-                                                    {{ $message }}
-                                                </div>
-                                                @enderror
-                                            </div>
-                                            <div class="col-md-12 col-12">
-                                                <div class="form-group">
-                                                    <label for="country-floating">Kata Sandi</label>
-                                                    <input type="password" id="country-floating" class="form-control @error('password') is-invalid @enderror" name="password">
+                                                    <input type="text" id="first-name-column" class="form-control"  name="rombongan_belajar">
                                                 </div>
                                             </div>
                                             <div class="col-md-12 col-12">
                                                 <div class="form-group">
-                                                    <label for="country-floating">Konfirmasi Kata Sandi</label>
-                                                    <input type="password" id="country-floating" class="form-control @error('password_confirmation') is-invalid @enderror" name="password_confirmation">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12 col-12">
-                                                <div class="form-group">
-                                                    <label for="country-floating">Jenis Pengguna</label>
-                                                    <select class="form-control @error('role_id') is-invalid @enderror" name="role_id">
-                                                        <option value="">Pilih Jenis Pengguna</option>
-                                                        @foreach ($roles as $role)
-                                                        <option value="{{ $role->id }}">{{ $role->role }}</option>
+                                                    <label for="country-floating">Tahun Pejaran</label>
+                                                    <select class="form-control" name="tahunpelajaran_id">
+                                                        <option value="">Pilih Tahun Pelajaran</option>
+                                                        @foreach ($tapels as $tapel)
+                                                        <option value="{{ $tapel->id }}" {{ ($tapel->is_active == 1 ? 'selected' : false) }}>{{ $tapel->tahunpelajaran }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -85,17 +57,17 @@
                             </div>
                         </div>
                     </div>
-                <a href="#" class="btn icon icon-left btn-success float-right" data-toggle="modal" data-target="#import-pengguna"><i data-feather="upload"></i> Import Pengguna</a>
-                <div class="modal fade text-left modal-borderless" id="import-pengguna" tabindex="-1" role="dialog" aria-labelledby="modalimport" aria-hidden="true">
+                <a href="#" class="btn icon icon-left btn-success float-right" data-toggle="modal" data-target="#import-rombel"><i data-feather="upload"></i> Import Rombongan Belajar</a>
+                <div class="modal fade text-left modal-borderless" id="import-rombel" tabindex="-1" role="dialog" aria-labelledby="modalimport" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-scrollable" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title">Import Pengguna</h5>
+                                <h5 class="modal-title">Import Rombongan Belajar</h5>
                                 <button type="button" class="close rounded-pill" data-dismiss="modal" aria-label="Close">
                                 <i data-feather="x"></i>
                                 </button>
                             </div>
-                            <form action="/users/import" method="post" enctype="multipart/form-data">
+                            <form action="/rombonganbelajar/import" method="post" enctype="multipart/form-data">
                                 @csrf
                             <div class="modal-body">
                                     <div class="row">
@@ -104,7 +76,7 @@
                                                 <label for="first-name-column">File</label>
                                                 <input type="file" id="first-name-column" class="form-control"  name="excel_file">
                                             </div>
-                                            <a href="assets/file/format_user.xlsx">Download Format</a>
+                                            <a href="assets/file/format_rombel.xlsx">Download Format</a>
                                         </div>
                                     </diV>
                                 </div>
@@ -134,10 +106,10 @@
                         <div class="row justify-content-end">
                                 <div class="col-md-3 col-3">
                                     <div class="form-group">
-                                            <select class="form-control" onchange="this.form.submit()" name="role_id">
+                                            <select class="form-control" onchange="this.form.submit()" name="tapel_id">
                                                 <option value="">Filter Pengguna</option>
-                                                @foreach ($roles as $role)
-                                                <option value="{{ $role->id }}" {{ (request('role_id') == $role->id ? 'selected' : false) }}>{{ $role->role }}</option>
+                                                @foreach ($tapels as $tapel)
+                                                <option value="{{ $tapel->id }}" {{ (request('tapel_id') == $tapel->id ? 'selected' : false) }}>{{ $tapel->tahunpelajaran }}</option>
                                                 @endforeach
                                             </select>
                                     </div>
@@ -154,23 +126,21 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Name</th>
-                            <th>Nama Pengguna</th>
-                            <th>Jenis Pengguna</th>
+                            <th>Tahun Pelajaran</th>
+                            <th>Nama Rombongan Belajar</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($users as $user)
+                        @foreach($rombels as $rombel)
                         <tr>
-                            <td>{{ $users->firstItem() + $loop->index }}</td>
-                            <td>{{ $user->name }}</td>
-                            <td>{{ $user->username }}</td>
-                            <td>{{ $user->role->role }}</td>
+                            <td>{{ $rombels->firstItem() + $loop->index }}</td>
+                            <td>{{ $rombel->tahunpelajaran->tahunpelajaran }}</td>
+                            <td>{{ $rombel->rombongan_belajar }}</td>
                             <td>
                                 <div class="btn-group mb-3" role="group" aria-label="Basic example">
-                                    <a href="/users/{{ $user->id }}/edit" class="badge icon bg-warning"><i data-feather="edit"></i></a>
-                                    <form action="/users/{{ $user->id }}" method="post">
+                                    <a href="/rombonganbelajar/{{ $rombel->id }}/edit" class="badge icon bg-warning"><i data-feather="edit"></i></a>
+                                    <form action="/rombonganbelajar/{{ $rombel->id }}" method="post">
                                         @method('delete')
                                         @csrf
                                         <button class="badge icon bg-danger border-0" onclick="return confirm('Yakin akan menghapus user ini?')"><i data-feather="trash"></i></button>
@@ -183,7 +153,7 @@
                   </table>
                   <div class="row mt-3">
                     <div class="col-md-12 col-12">
-                        {{ $users->links() }}
+                        {{ $rombels->links() }}
                     </div>
                   </div>
                 </div>

@@ -5,6 +5,8 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AllUserController;
+use App\Http\Controllers\TahunPelajaranController;
+use App\Http\Controllers\RombonganBelajarController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,4 +31,7 @@ Route::get('/akun', [UserController::class, 'ubahpassword'])->middleware('auth')
 Route::post('/akun', [UserController::class, 'passwordupdate'])->middleware('auth');
 Route::get('/user', [UserController::class, 'index'])->middleware('auth');
 Route::post('/useradd', [UserController::class, 'store'])->middleware('auth');
+Route::post('/users/import', [AllUserController::class, 'import'])->middleware('auth');
 Route::resource('/users', AllUserController::class)->middleware('auth');
+Route::resource('/tahunpelajaran', TahunpelajaranController::class)->middleware('auth');
+Route::resource('/rombonganbelajar', RombonganBelajarController::class)->middleware('auth');
