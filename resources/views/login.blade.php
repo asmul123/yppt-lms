@@ -30,7 +30,7 @@
                         
                     </div>
 
-                    <form action="/login" method="post">
+                    <form action="{{ url('/') }}/login" method="post">
                         @csrf
                         <div class="form-group position-relative has-icon-left">
                             <label for="username">Nama Pengguna</label>
