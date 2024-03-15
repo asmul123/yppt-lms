@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Anggotarombel;
+use App\Models\Aksesuser;
 use Illuminate\Http\Request;
 
-class AnggotarombelController extends Controller
+class AksesuserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -29,23 +29,23 @@ class AnggotarombelController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
+            'tahunpelajaran_id' => 'required',
+            'hakakses_id' => 'required',
             'user_id' => 'required'
         ]);
-        $validated['tahunpelajaran_id'] = $request->tahunpelajaran_id;
-        $validated['rombonganbelajar_id'] = $request->rombonganbelajar_id;
         $gagal = 0;
         $berhasil = 0;
         $users_id = $request->user_id;
         $count = count($users_id);
 		for ($i = 0; $i < $count; $i++) {
 			$user_id = $users_id[$i];
-            $existingAnggota = Anggotarombel::where('tahunpelajaran_id', $validated['tahunpelajaran_id'])
+            $existingHakAkses = Aksesuser::where('tahunpelajaran_id', $validated['tahunpelajaran_id'])
                                             ->where('user_id', $user_id)->first();
             $validated['user_id'] = $user_id;
-            if ($existingAnggota) {
+            if ($existingHakAkses) {
                 $gagal++;
             } else {
-                Anggotarombel::create($validated);
+                Aksesuser::create($validated);
                 $berhasil++;
             }
         }
@@ -55,7 +55,7 @@ class AnggotarombelController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Anggotarombel $anggotarombel)
+    public function show(Aksesuser $aksesuser)
     {
         //
     }
@@ -63,7 +63,7 @@ class AnggotarombelController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Anggotarombel $anggotarombel)
+    public function edit(Aksesuser $aksesuser)
     {
         //
     }
@@ -71,7 +71,7 @@ class AnggotarombelController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Anggotarombel $anggotarombel)
+    public function update(Request $request, Aksesuser $aksesuser)
     {
         //
     }
@@ -79,9 +79,9 @@ class AnggotarombelController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Anggotarombel $anggotarombel)
-    {        
-        Anggotarombel::destroy($anggotarombel->id);
-        return redirect()->back()->with('success', 'Anggota Rombongan belajar berhasil dihapus');
+    public function destroy(Aksesuser $aksesuser)
+    {
+        Aksesuser::destroy($aksesuser->id);
+        return redirect()->back()->with('success', 'Akses user berhasil dihapus');
     }
 }

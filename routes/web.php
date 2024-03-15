@@ -10,6 +10,10 @@ use App\Http\Controllers\RombonganBelajarController;
 use App\Http\Controllers\PembelajaranController;
 use App\Http\Controllers\AdministrasiController;
 use App\Http\Controllers\HakaksesController;
+use App\Http\Controllers\AksesuserController;
+use App\Http\Controllers\AnggotarombelController;
+use App\Http\Controllers\KurikulumController;
+use App\Http\Controllers\DokumenkurikulumController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -35,9 +39,14 @@ Route::post('/akun', [UserController::class, 'passwordupdate'])->middleware('aut
 Route::get('/user', [UserController::class, 'index'])->middleware('auth');
 Route::post('/useradd', [UserController::class, 'store'])->middleware('auth');
 Route::post('/users/import', [AllUserController::class, 'import'])->middleware('auth');
+Route::post('/rombonganbelajar/import', [RombonganBelajarController::class, 'import'])->middleware('auth');
 Route::resource('/users', AllUserController::class)->middleware('auth');
 Route::resource('/tahunpelajaran', TahunpelajaranController::class)->middleware('auth');
 Route::resource('/rombonganbelajar', RombonganBelajarController::class)->middleware('auth');
 Route::resource('/pembelajaran', PembelajaranController::class)->middleware('auth');
 Route::resource('/administrasi', AdministrasiController::class)->middleware('auth');
 Route::resource('/hakakses', HakaksesController::class)->middleware('auth');
+Route::resource('/aksesuser', AksesuserController::class)->middleware('auth');
+Route::resource('/anggotarombel', AnggotarombelController::class)->middleware('auth');
+Route::resource('/kurikulum', KurikulumController::class)->middleware('auth');
+Route::resource('/dokumenkurikulum', DokumenkurikulumController::class)->middleware('auth');

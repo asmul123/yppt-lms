@@ -3,7 +3,6 @@
 @section('content')
 
 
-<link rel="stylesheet" href="assets/vendors/simple-datatables/style.css">
 <div class="main-content container-fluid">
     <div class="page-title">
         <h3>Daftar Pembelajaran</h3>
@@ -22,7 +21,7 @@
                                     <i data-feather="x"></i>
                                     </button>
                                 </div>
-                                <form action="/pembelajaran" method="post">
+                                <form action="{{ url('/') }}/pembelajaran" method="post">
                                     @csrf
                                 <div class="modal-body">
                                         <div class="row">
@@ -92,9 +91,9 @@
                             <td>{{ $pembelajaran->rombonganbelajar->rombongan_belajar }}</td>
                             <td>
                                 <div class="btn-group mb-3" role="group" aria-label="Basic example">
-                                    <a href="/pembelajarandetail/{{ $pembelajaran->id }}" class="badge bg-info"><i data-feather="list"></i></a>
-                                    <a href="/pembelajaran/{{ $pembelajaran->id }}" class="badge bg-info"><i data-feather="edit"></i></a>
-                                    <form action="/pembelajaran/{{ $pembelajaran->id }}" method="post">
+                                    <a href="{{ url('/') }}/pembelajarandetail/{{ $pembelajaran->id }}" class="badge bg-info"><i data-feather="list"></i></a>
+                                    <a href="{{ url('/') }}/pembelajaran/{{ $pembelajaran->id }}" class="badge bg-info"><i data-feather="edit"></i></a>
+                                    <form action="{{ url('/') }}/pembelajaran/{{ $pembelajaran->id }}" method="post">
                                         @method('delete')
                                         @csrf
                                         <button class="badge icon bg-danger border-0" onclick="return confirm('Yakin akan menghapus tahun pelajaran ini?')"><i data-feather="trash"></i></button>
@@ -116,7 +115,4 @@
     </section>
 </div>
 
-    
-<script src="assets/vendors/simple-datatables/simple-datatables.js"></script>
-<script src="assets/js/vendors.js"></script>
 @endsection

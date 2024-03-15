@@ -3,7 +3,6 @@
 @section('content')
 
 
-<link rel="stylesheet" href="assets/vendors/simple-datatables/style.css">
 <div class="main-content container-fluid">
     <div class="page-title">
         <h3>Daftar Rombel</h3>
@@ -11,8 +10,8 @@
     <section class="section">
         <div class="card">
             <div class="card-header">
-                <a href="#" class="btn icon icon-left btn-primary" data-toggle="modal" data-target="#tambah-rombel"><i data-feather="plus"></i> Tambah Rombongan Belajar</a>
-                <!--BorderLess Modal Modal -->
+                    <a href="#" class="btn icon icon-left btn-primary" data-toggle="modal" data-target="#tambah-rombel"><i data-feather="plus"></i> Tambah Rombongan Belajar</a>
+                    <!--BorderLess Modal Modal -->
                     <div class="modal fade text-left modal-borderless" id="tambah-rombel" tabindex="-1" role="dialog" aria-labelledby="modalTambah" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-scrollable" role="document">
                             <div class="modal-content">
@@ -22,14 +21,14 @@
                                     <i data-feather="x"></i>
                                     </button>
                                 </div>
-                                <form action="/rombonganbelajar" method="post">
+                                <form action="{{ url('/') }}/rombonganbelajar" method="post">
                                     @csrf
                                 <div class="modal-body">
                                         <div class="row">
                                             <div class="col-md-12 col-12">
                                                 <div class="form-group">
-                                                    <label for="first-name-column">Name</label>
-                                                    <input type="text" id="first-name-column" class="form-control"  name="rombongan_belajar">
+                                                    <label for="first-name-column">Nama Kelas</label>
+                                                    <input type="text" class="form-control"  name="rombongan_belajar">
                                                 </div>
                                             </div>
                                             <div class="col-md-12 col-12">
@@ -39,6 +38,28 @@
                                                         <option value="">Pilih Tahun Pelajaran</option>
                                                         @foreach ($tapels as $tapel)
                                                         <option value="{{ $tapel->id }}" {{ ($tapel->is_active == 1 ? 'selected' : false) }}>{{ $tapel->tahunpelajaran }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 col-12">
+                                                <div class="form-group">
+                                                    <label for="country-floating">Wali Kelas</label>
+                                                    <select class="form-control" name="user_id" placeholder="Boleh dikosongkan">
+                                                        <option value="">Pilih Walikelas</option>
+                                                        @foreach ($users as $user)
+                                                        <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 col-12">
+                                                <div class="form-group">
+                                                    <label for="country-floating">Kurikulum</label>
+                                                    <select class="form-control" name="kurikulum_id">
+                                                        <option value="">Pilih Kurikulum</option>
+                                                        @foreach ($kurikulums as $kurikulum)
+                                                        <option value="{{ $kurikulum->id }}">{{ $kurikulum->kurikulum }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -67,7 +88,7 @@
                                 <i data-feather="x"></i>
                                 </button>
                             </div>
-                            <form action="/rombonganbelajar/import" method="post" enctype="multipart/form-data">
+                            <form action="{{ url('/') }}/rombonganbelajar/import" method="post" enctype="multipart/form-data">
                                 @csrf
                             <div class="modal-body">
                                     <div class="row">
@@ -76,7 +97,7 @@
                                                 <label for="first-name-column">File</label>
                                                 <input type="file" id="first-name-column" class="form-control"  name="excel_file">
                                             </div>
-                                            <a href="assets/file/format_rombel.xlsx">Download Format</a>
+                                            <a href="{{ url('/') }}/rombonganbelajar/create">Download Format</a>
                                         </div>
                                     </diV>
                                 </div>
@@ -128,6 +149,9 @@
                             <th>#</th>
                             <th>Tahun Pelajaran</th>
                             <th>Nama Rombongan Belajar</th>
+                            <th>Kurikulum</th>
+                            <th>Wali Kelas</th>
+                            <th>Jumlah Anggota</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -137,10 +161,20 @@
                             <td>{{ $rombels->firstItem() + $loop->index }}</td>
                             <td>{{ $rombel->tahunpelajaran->tahunpelajaran }}</td>
                             <td>{{ $rombel->rombongan_belajar }}</td>
+                            <td>{{ $rombel->kurikulum->kurikulum }}</td>
+                            <td>
+                            @if ($rombel->user_id==NULL)
+                            <span class="badge bg-warning">Belum ditentukan</span>
+                            @else
+                            {{ $rombel->user->name }}
+                            @endif
+                            </td>
+                            <td>{{  App\Models\Anggotarombel::where('rombonganbelajar_id', $rombel->id)->count() }}</td>
                             <td>
                                 <div class="btn-group mb-3" role="group" aria-label="Basic example">
-                                    <a href="/rombonganbelajar/{{ $rombel->id }}/edit" class="badge icon bg-warning"><i data-feather="edit"></i></a>
-                                    <form action="/rombonganbelajar/{{ $rombel->id }}" method="post">
+                                    <a href="{{ url('/') }}/rombonganbelajar/{{ $rombel->id }}" class="badge icon bg-success"><i data-feather="list"></i></a>
+                                    <a href="{{ url('/') }}/rombonganbelajar/{{ $rombel->id }}/edit" class="badge icon bg-warning"><i data-feather="edit"></i></a>
+                                    <form action="{{ url('/') }}/rombonganbelajar/{{ $rombel->id }}" method="post">
                                         @method('delete')
                                         @csrf
                                         <button class="badge icon bg-danger border-0" onclick="return confirm('Yakin akan menghapus user ini?')"><i data-feather="trash"></i></button>
@@ -162,7 +196,4 @@
     </section>
 </div>
 
-    
-<script src="assets/vendors/simple-datatables/simple-datatables.js"></script>
-<script src="assets/js/vendors.js"></script>
 @endsection

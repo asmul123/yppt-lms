@@ -12,7 +12,7 @@
                 Ubah data pengguna
             </div>
             <div class="card-body">
-                <form action="/users/{{ $user->id }}" method="post">
+                <form action="{{ url('/') }}/users/{{ $user->id }}" method="post">
                     @method('put')
                     @csrf
                     <div class="row">

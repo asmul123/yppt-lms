@@ -5,10 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Learning Manajemen System - SMKS YPPT GARUT</title>
-    <link rel="stylesheet" href="assets/css/bootstrap.css">
+    <link rel="stylesheet" href="{{ url('/') }}/assets/css/bootstrap.css">
     
-    <link rel="shortcut icon" href="assets/images/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="assets/css/app.css">
+    <link rel="shortcut icon" href="{{ url('/') }}/assets/images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="{{ url('/') }}/assets/css/app.css">
 </head>
 
 <body>
@@ -20,7 +20,7 @@
             <div class="card pt-4">
                 <div class="card-body">
                     <div class="text-center mb-5">
-                        <img src="assets/images/logo.jpg" height="120" class='mb-4'>
+                        <img src="{{ url('/') }}/assets/images/logo.jpg" height="120" class='mb-4'>
                         <h3>SMKS YPPT GARUT</h3>
                         <p>Learning Manajemen System</p>
                         

@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Hakakses;
+use App\Models\Aksesuser;
+use App\Models\Tahunpelajaran;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class HakaksesController extends Controller
@@ -15,7 +18,10 @@ class HakaksesController extends Controller
         return view('hakakses', [
             'menu' => 'pengaturan',
             'smenu' => 'tahunpelajaran',
-            'hakaksess' => Hakakses::all()
+            'tapel' => Tahunpelajaran::where('is_active', '1')->first(),
+            'tahunpelajarans' => Tahunpelajaran::all(),
+            'users' => User::where('role_id', '2')->get(),
+            'hakaksess' => Hakakses::all(),
         ]);
     }
 
@@ -38,9 +44,23 @@ class HakaksesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Hakakses $hakakses)
+    public function show(Hakakses $hakakse)
     {
-        //
+        $aksesusers = Aksesuser::where('hakakses_id', $hakakse->id);
+        if (request('search')) {
+            $aksesusers->whereRelation('user','name', 'like', '%'. request('search').'%' );
+        }
+        if (request('tapel_id')) {
+            $aksesusers->where('tahunpelajaran_id', request('tapel_id'));
+        }
+
+        return view('aksesuser', [
+            'menu' => 'pengaturan',
+            'smenu' => 'tahunpelajaran',
+            'tapels' => Tahunpelajaran::all(),
+            'hakakses' => $hakakse,
+            'aksesusers' => $aksesusers->paginate(10)->withQueryString()
+        ]);
     }
 
     /**
@@ -48,7 +68,6 @@ class HakaksesController extends Controller
      */
     public function edit(Hakakses $hakakses)
     {
-        //
     }
 
     /**

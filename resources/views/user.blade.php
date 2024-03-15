@@ -2,8 +2,6 @@
 
 @section('content')
 
-
-<link rel="stylesheet" href="assets/vendors/simple-datatables/style.css">
 <div class="main-content container-fluid">
     <div class="page-title">
         <h3>Daftar Pengguna</h3>
@@ -22,7 +20,7 @@
                                     <i data-feather="x"></i>
                                     </button>
                                 </div>
-                                <form action="/users" method="post">
+                                <form action="{{ url('/') }}/users" method="post">
                                     @csrf
                                 <div class="modal-body">
                                         <div class="row">
@@ -95,7 +93,7 @@
                                 <i data-feather="x"></i>
                                 </button>
                             </div>
-                            <form action="/users/import" method="post" enctype="multipart/form-data">
+                            <form action="{{ url('/') }}/users/import" method="post" enctype="multipart/form-data">
                                 @csrf
                             <div class="modal-body">
                                     <div class="row">
@@ -169,8 +167,8 @@
                             <td>{{ $user->role->role }}</td>
                             <td>
                                 <div class="btn-group mb-3" role="group" aria-label="Basic example">
-                                    <a href="/users/{{ $user->id }}/edit" class="badge icon bg-warning"><i data-feather="edit"></i></a>
-                                    <form action="/users/{{ $user->id }}" method="post">
+                                    <a href="{{ url('/') }}/users/{{ $user->id }}/edit" class="badge icon bg-warning"><i data-feather="edit"></i></a>
+                                    <form action="{{ url('/') }}/users/{{ $user->id }}" method="post">
                                         @method('delete')
                                         @csrf
                                         <button class="badge icon bg-danger border-0" onclick="return confirm('Yakin akan menghapus user ini?')"><i data-feather="trash"></i></button>
@@ -192,7 +190,4 @@
     </section>
 </div>
 
-    
-<script src="assets/vendors/simple-datatables/simple-datatables.js"></script>
-<script src="assets/js/vendors.js"></script>
 @endsection

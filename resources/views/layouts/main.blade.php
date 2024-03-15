@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LMS - SMKS YPPT GARUT</title>
     
+    <link rel="stylesheet" href="{{ url('/') }}/assets/vendors/choices.js/choices.min.css" />
     <link rel="stylesheet" href="{{ url('/') }}/assets/css/bootstrap.css">
     
     <link rel="stylesheet" href="{{ url('/') }}/assets/vendors/chartjs/Chart.min.css">
@@ -55,6 +56,9 @@
                         </li>
                         <li>
                             <a href="{{ url('/') }}/rombonganbelajar">Data Rombongan Belajar</a>
+                        </li>
+                        <li>
+                            <a href="{{ url('/') }}/kurikulum">Data Kurikulum</a>
                         </li>
                     </ul>
                 </li>
@@ -121,6 +125,10 @@
     <script src="{{ url('/') }}/assets/vendors/chartjs/Chart.min.js"></script>
     <script src="{{ url('/') }}/assets/vendors/apexcharts/apexcharts.min.js"></script>
     <script src="{{ url('/') }}/assets/js/pages/dashboard.js"></script>
+
+    
+    <!-- Include Choices JavaScript -->
+    <script src="{{ url('/') }}/assets/vendors/choices.js/choices.min.js"></script>
 
     <script src="{{ url('/') }}/assets/js/main.js"></script>
 </body>

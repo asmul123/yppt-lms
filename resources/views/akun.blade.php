@@ -32,7 +32,7 @@
                         </ul>
                     </div>
                     @endif
-                    <form action="/akun" method="post">
+                    <form action="{{ url('/') }}/akun" method="post">
                         @csrf
                     <div class="row">                        
                         <div class="col-md-12">

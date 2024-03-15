@@ -2,8 +2,6 @@
 
 @section('content')
 
-
-<link rel="stylesheet" href="assets/vendors/simple-datatables/style.css">
 <div class="main-content container-fluid">
     <div class="page-title">
         <h3>Daftar Tahun Pelajaran</h3>
@@ -22,7 +20,7 @@
                                     <i data-feather="x"></i>
                                     </button>
                                 </div>
-                                <form action="/tahunpelajaran" method="post">
+                                <form action="{{ url('/') }}/tahunpelajaran" method="post">
                                     @csrf
                                 <div class="modal-body">
                                         <div class="row">
@@ -112,12 +110,12 @@
                             </td>
                             <td>
                                 <div class="btn-group mb-3" role="group" aria-label="Basic example">
-                                    <form action="/tahunpelajaran/{{ $tapel->id }}" method="post">
+                                    <form action="{{ url('/') }}/tahunpelajaran/{{ $tapel->id }}" method="post">
                                         @method('put')
                                         @csrf
                                         <button class="badge icon bg-primary border-0"><i data-feather="check"></i></button>
                                     </form>
-                                    <form action="/tahunpelajaran/{{ $tapel->id }}" method="post">
+                                    <form action="{{ url('/') }}/tahunpelajaran/{{ $tapel->id }}" method="post">
                                         @method('delete')
                                         @csrf
                                         <button class="badge icon bg-danger border-0" onclick="return confirm('Yakin akan menghapus tahun pelajaran ini?')"><i data-feather="trash"></i></button>
@@ -139,7 +137,4 @@
     </section>
 </div>
 
-    
-<script src="assets/vendors/simple-datatables/simple-datatables.js"></script>
-<script src="assets/js/vendors.js"></script>
 @endsection

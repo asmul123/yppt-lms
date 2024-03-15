@@ -89,7 +89,7 @@ class AllUserController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required',
-            'username' => 'required|unique:username',
+            'username' => 'required', 'unique:username',
             'password' => 'required',
             'role_id' => 'required'
         ]);
