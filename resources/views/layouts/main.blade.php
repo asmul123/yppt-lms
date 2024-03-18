@@ -69,12 +69,12 @@
                         <span>Pembelajaran</span>
                     </a>
                 </li>
-                <li class="sidebar-item {{ ($menu === 'administrasi') ? 'active' : '' }}">
+                {{-- <li class="sidebar-item {{ ($menu === 'administrasi') ? 'active' : '' }}">
                     <a href="{{ url('/') }}/administrasi" class='sidebar-link'>
                         <i data-feather="archive" width="20"></i> 
                         <span>Administrasi</span>
                     </a>
-                </li>
+                </li> --}}
                 @elseif(auth()->user()->role->id == 3)
                 <li class="sidebar-item {{ ($menu === 'pembelajaran') ? 'active' : '' }}">
                     <a href="{{ url('/') }}/pembelajaranpd" class='sidebar-link'>

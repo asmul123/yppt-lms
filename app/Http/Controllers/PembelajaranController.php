@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pembelajaran;
+use App\Models\Penugasan;
+use App\Models\Jenispenugasan;
+use App\Models\Tahunpelajaran;
+use App\Models\Rombonganbelajar;
 use Illuminate\Http\Request;
 
 class PembelajaranController extends Controller
@@ -12,23 +16,31 @@ class PembelajaranController extends Controller
      */
     public function index()
     {
-        $pembelajarans = Pembelajaran::orderBy('tahunpelajaran_id', 'asc')->orderBy('matapelajaran', 'asc');
+        $tapelaktif = Tahunpelajaran::where('is_active', '1')->first();
+        $pembelajarans = Pembelajaran::where('user_id', auth()->user()->id)->orderBy('matapelajaran', 'asc');
         if (request('tapel_id')) {
             $pembelajarans->where('tahunpelajaran_id', request('tapel_id'));
+            $tapel_id = request('tapel_id');
+        } else {
+            $pembelajarans->where('tahunpelajaran_id', $tapelaktif->id);
+            $tapel_id = $tapelaktif->id;
         }
         if (request('search')) {
             $pembelajarans->where('matapelajaran', 'like', '%' . request('search') . '%');
         }
         return view('pembelajaran', [
             'menu' => 'pembelajaran',
-            'pembelajarans' => $pembelajarans->paginate(10)->withQueryString()
+            'tapels' => Tahunpelajaran::orderBy('tapel_code','asc')->get(),
+            'tapel_id' => $tapel_id,
+            'rombels' => Rombonganbelajar::where('tahunpelajaran_id', $tapel_id)->get(),
+            'pembelajarans' => $pembelajarans->paginate(12)->withQueryString()
         ]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
         //
     }
@@ -38,15 +50,65 @@ class PembelajaranController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'tahunpelajaran_id' => 'required',
+            'rombonganbelajar_id' => 'required',
+            'matapelajaran' => 'required'
+        ]);
+        $validated['user_id'] = auth()->user()->id;
+        $gagal = 0;
+        $berhasil = 0;
+        $rombonganbelajars_id = $request->rombonganbelajar_id;
+        $count = count($rombonganbelajars_id);
+		for ($i = 0; $i < $count; $i++) {
+			$rombonganbelajar_id = $rombonganbelajars_id[$i];
+            $existingMapel = Pembelajaran::where('tahunpelajaran_id', $validated['tahunpelajaran_id'])
+                                            ->where('matapelajaran', $request->matapelajaran)
+                                            ->where('rombonganbelajar_id', $rombonganbelajar_id)
+                                            ->where('user_id', auth()->user()->id)
+                                            ->first();
+            $validated['rombonganbelajar_id'] = $rombonganbelajar_id;
+            if ($existingMapel) {
+                $gagal++;
+            } else {
+                Pembelajaran::create($validated);
+                $berhasil++;
+            }
+        }
+        return redirect()->back()->with('success', 'Berhasil menambahkan '.$berhasil.' Kelas dan '.$gagal.' Kelas gagal ditambahkan');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Pembelajaran $pembelajaran)
+    public function show(Request $request, Pembelajaran $pembelajaran)
     {
-        //
+        if($request->tab==""){            
+            return view('penugasan', [
+                'menu' => 'pembelajaran',
+                'tab' => 'penugasan',
+                'jenispenugasans' => Jenispenugasan::all(),
+                'tapels' => Tahunpelajaran::orderBy('tapel_code','asc')->get(),
+                'pembelajaran' => $pembelajaran,
+                'penugasans' => Penugasan::where('pembelajaran_id', $pembelajaran->id)->get()
+            ]);
+        } else if ($request->tab=="diskusi"){
+            return view('diskusi', [
+                'menu' => 'pembelajaran',
+                'tab' => 'penugasan',
+                'tapels' => Tahunpelajaran::orderBy('tapel_code','asc')->get(),
+                'pembelajaran' => $pembelajaran,
+                'penugasans' => Penugasan::where('pembelajaran_id', $pembelajaran->id)->get()
+            ]);
+        } else if ($request->tab=="banksoal"){
+            return view('banksoal', [
+                'menu' => 'pembelajaran',
+                'tab' => 'penugasan',
+                'tapels' => Tahunpelajaran::orderBy('tapel_code','asc')->get(),
+                'pembelajaran' => $pembelajaran,
+                'penugasans' => Penugasan::where('pembelajaran_id', $pembelajaran->id)->get()
+            ]);
+        }
     }
 
     /**
