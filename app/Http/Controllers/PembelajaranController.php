@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Pembelajaran;
 use App\Models\Penugasan;
+use App\Models\Banksoal;
 use App\Models\Jenispenugasan;
 use App\Models\Tahunpelajaran;
 use App\Models\Rombonganbelajar;
@@ -95,7 +96,7 @@ class PembelajaranController extends Controller
         } else if ($request->tab=="diskusi"){
             return view('diskusi', [
                 'menu' => 'pembelajaran',
-                'tab' => 'penugasan',
+                'tab' => 'diskusi',
                 'tapels' => Tahunpelajaran::orderBy('tapel_code','asc')->get(),
                 'pembelajaran' => $pembelajaran,
                 'penugasans' => Penugasan::where('pembelajaran_id', $pembelajaran->id)->get()
@@ -103,10 +104,10 @@ class PembelajaranController extends Controller
         } else if ($request->tab=="banksoal"){
             return view('banksoal', [
                 'menu' => 'pembelajaran',
-                'tab' => 'penugasan',
-                'tapels' => Tahunpelajaran::orderBy('tapel_code','asc')->get(),
-                'pembelajaran' => $pembelajaran,
-                'penugasans' => Penugasan::where('pembelajaran_id', $pembelajaran->id)->get()
+                'tab' => 'banksoal',
+                'mapels' => Pembelajaran::where('user_id', auth()->user()->id)->groupBy('matapelajaran')->get(),
+                'banksoals' => Banksoal::where('user_id', auth()->user()->id)->paginate(10)->withQueryString(),
+                'pembelajaran' => $pembelajaran
             ]);
         }
     }

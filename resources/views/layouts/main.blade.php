@@ -13,6 +13,14 @@
     <link rel="stylesheet" href="{{ url('/') }}/assets/vendors/perfect-scrollbar/perfect-scrollbar.css">
     <link rel="stylesheet" href="{{ url('/') }}/assets/css/app.css">
     <link rel="shortcut icon" href="{{ url('/') }}/assets/images/favicon.ico" type="image/x-icon">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- include summernote css/js -->
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs5.min.css" />
+
+    <!-- place this script before closing body tag -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs5.min.js"></script>
 </head>
 <body>
     <div id="app">
@@ -83,12 +91,12 @@
                     </a>
                 </li>
                 @endif
-                <li class="sidebar-item {{ ($menu === 'profil') ? 'active' : '' }}">
+                {{-- <li class="sidebar-item {{ ($menu === 'profil') ? 'active' : '' }}">
                     <a href="{{ url('/') }}/profil" class='sidebar-link'>
                         <i data-feather="user" width="20"></i> 
                         <span>Profil Saya</span>
                     </a>
-                </li>
+                </li> --}}
                 <li class="sidebar-item">
                     <form action="{{ url('/') }}/logout" method="POST" id="form-logout">
                         @csrf
@@ -131,5 +139,6 @@
     <script src="{{ url('/') }}/assets/vendors/choices.js/choices.min.js"></script>
 
     <script src="{{ url('/') }}/assets/js/main.js"></script>
+
 </body>
 </html>

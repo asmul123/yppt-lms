@@ -41,44 +41,21 @@
                             </form>
                     </div>
                     <div class="card-content">
-                        <div class="card-body">
-                            <div class="list-group list-group-horizontal-sm mb-1 text-center" role="tablist">
-                                <a class="list-group-item list-group-item-action" id="list-sunday-list"
-                                 href="{{ url('/pembelajaran/'.$pembelajaran->id) }}" role="tab">Penugasan</a>
-                                <a class="list-group-item list-group-item-action active" id="list-monday-list"
-                                    href="{{ url('/pembelajaran/'.$pembelajaran->id."?tab=diskusi") }}" role="tab">Diskusi Kelas</a>
-                                <a class="list-group-item list-group-item-action" id="list-tuesday-list"
-                                    href="{{ url('/pembelajaran/'.$pembelajaran->id."?tab=kehadiran") }}" role="tab">Kehadiran</a>
-                                <a class="list-group-item list-group-item-action" id="list-tuesday-list"
-                                    href="{{ url('/pembelajaran/'.$pembelajaran->id."?tab=banksoal") }}" role="tab">Bank Soal</a>
-                                <a class="list-group-item list-group-item-action" id="list-tuesday-list"
-                                    href="{{ url('/pembelajaran/'.$pembelajaran->id."?tab=administrasi") }}" role="tab">Administrasi</a>
-                            </div>
+                        <div class="card-body">                                                      
+                            @include('layouts.tab')
                             <div class="card-header">
                                 <h1 class="card-title pl-1">Riwayat Diskusi</h1>
                             </div>
 
                             <div class="card border border-light">
-                                <div class="card-header">
-                                    <span class="collapsed collapse-title">Tanggal Penugasan : 17 Maret 2024 15:00:03</span>
-                                    <br>
-                                    <sup>Oleh : Asep Ulumudin, S.Kom.</sup>
-                                </div>
                                 <div class="card-body">
                                     <div class="card border border-light">
                                             <div class="card-header">
-                                                <h3>Judul Tugas</h3>
-                                                Jatuh Tempo pada : 20 Maret 2024                                                
+                                                <h3>Topik Baru</h3>                                              
                                             </div>
                                             <div class="card-body">
-                                                <a href="#" class="btn btn-outline-primary">Lihat Tugas</a>
-                                            </div>
-                                            <div class="card-body">
-                                                <form id="form" method="get" action="{{ url('/pembelajaran/'.$pembelajaran->id.'/edit') }}"  id="identifier">
-                                                <a href="#">Tulis Komentar</a>
-                                                <div id="komentar"></div>
+                                                <form id="form" method="get" action="{{ url('/diskusi') }}"  id="identifier">
                                                 <div id="full">
-                                                    Tulis Komentar
                                                 </div>
                                                 <input type="hidden" name="komentar" id="hiddenInput">
                                                 <link rel="stylesheet" href="{{ url('/assets/vendors/quill/quill.bubble.css') }}">
@@ -86,10 +63,15 @@
                                                 <script src="{{ url('/assets/vendors/quill/quill.min.js') }}"></script>
                                                 <script src="{{ url('/assets/js/pages/form-editor.js') }}"></script>
                                                 <hr>
-                                                <input type="submit" class="btn btn-success btn-sm" value="Simpan">
+                                                <input type="submit" class="btn btn-success btn-sm" value="Post">
                                                 </form>
                                             </div>
                                     </div>
+                                </div>
+                            </div>
+                            <div class="card border border-light">
+                                <div class="card-body text-center">
+                                    Belum ada topik diskusi
                                 </div>
                             </div>
                             
@@ -102,64 +84,5 @@
             </div>
         </div>
     </section>
-    <!-- list group with contextual & horizontal ends -->
-    <section id="bg-variants">
-        <div class="row">
-            <div class="col-xl-12 col-sm-12 col-12">
-                <div class="card">
-                    <div class="card-content">
-                        <div class="row no-gutters">
-                            <div class="col-lg-12 col-12 text-center">
-                                <div class="card-body">
-                                    @if ($penugasans->count()==0)
-                                    <p class="card-text text-ellipsis">
-                                        Anda belum membuat tugas pada kelas ini
-                                    </p>
-                                    @endif
-                                    <a href="#" class="btn btn-info" data-toggle="modal" data-target="#tambah-tapel">Tambah Tugas</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Background variants section end -->
-    <!--BorderLess Modal Modal -->
-                    <div class="modal fade text-left modal-borderless" id="tambah-tapel" tabindex="-1" role="dialog" aria-labelledby="modalTambah" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-scrollable" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Tambah Tugas</h5>
-                                    <button type="button" class="close rounded-pill" data-dismiss="modal" aria-label="Close">
-                                    <i data-feather="x"></i>
-                                    </button>
-                                </div>
-                                <form action="{{ url('/pembelajaran') }}" method="post">
-                                    @csrf
-                                <div class="modal-body">
-                                        <div class="row">
-                                            <div class="col-md-12 col-12">
-                                                <div class="form-group">
-                                                    <label for="first-name-column">Nama Pelajaran</label>
-                                                    <input type="text" id="first-name-column" class="form-control" name="matapelajaran">
-                                                </div>
-                                            </div>
-                                        </diV>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-light-primary" data-dismiss="modal">
-                                            <i class="bx bx-x d-block d-sm-none"></i>
-                                            <span class="d-none d-sm-block">Keluar</span>
-                                        </button>
-                                        <input type="submit" class="btn btn-primary ml-1" value="Simpan">
-                                            <i class="bx bx-check d-block d-sm-none"></i>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>    
-</div>
 
 @endsection

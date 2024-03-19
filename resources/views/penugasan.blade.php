@@ -41,60 +41,31 @@
                             </form>
                     </div>
                     <div class="card-content">
-                        <div class="card-body">
-                            <div class="list-group list-group-horizontal-sm mb-1 text-center" role="tablist">
-                                <a class="list-group-item list-group-item-action active" id="list-sunday-list"
-                                 href="{{ url('/pembelajaran/'.$pembelajaran->id) }}" role="tab">Penugasan</a>
-                                <a class="list-group-item list-group-item-action" id="list-monday-list"
-                                    href="{{ url('/pembelajaran/'.$pembelajaran->id."?tab=diskusi") }}" role="tab">Diskusi Kelas</a>
-                                <a class="list-group-item list-group-item-action" id="list-tuesday-list"
-                                    href="{{ url('/pembelajaran/'.$pembelajaran->id."?tab=kehadiran") }}" role="tab">Kehadiran</a>
-                                <a class="list-group-item list-group-item-action" id="list-tuesday-list"
-                                    href="{{ url('/pembelajaran/'.$pembelajaran->id."?tab=banksoal") }}" role="tab">Bank Soal</a>
-                                <a class="list-group-item list-group-item-action" id="list-tuesday-list"
-                                    href="{{ url('/pembelajaran/'.$pembelajaran->id."?tab=administrasi") }}" role="tab">Administrasi</a>
-                            </div>
+                        <div class="card-body">                                                      
+                            @include('layouts.tab')
                             <div class="card-header">
                                 <h1 class="card-title pl-1">Daftar Tugas</h1>
                             </div>
-
+                            @foreach($penugasans as $penugasan)
                             <div class="card border border-light">
                                 <div class="card-header">
-                                    <span class="collapsed collapse-title">Tanggal Penugasan : 17 Maret 2024 15:00:03</span>
+                                    <span class="collapsed collapse-title">Tanggal Penugasan : {{ $penugasan->waktumulai }}</span>
                                     <br>
-                                    <sup>Oleh : Asep Ulumudin, S.Kom.</sup>
+                                    <sup>Oleh : {{ $penugasan->user->name }}</sup>
                                 </div>
                                 <div class="card-body">
                                     <div class="card border border-light">
                                             <div class="card-header">
-                                                <h3>Judul Tugas</h3>
-                                                Jatuh Tempo pada : 20 Maret 2024                                                
+                                                <h3>{{ $penugasan->judultugas }}</h3>
+                                                <sup>Jatuh Tempo pada : {{ $penugasan->waktuselesai }}</sup>                                                
                                             </div>
                                             <div class="card-body">
-                                                <a href="#" class="btn btn-outline-primary">Lihat Tugas</a>
-                                            </div>
-                                            <div class="card-body">
-                                                <form id="form" method="get" action="{{ url('/pembelajaran/'.$pembelajaran->id.'/edit') }}"  id="identifier">
-                                                <a href="#" id="add-div-link">Tulis Komentar</a>
-
-                                                
-                                                <link rel="stylesheet" href="{{ url('/assets/vendors/quill/quill.bubble.css') }}">
-                                                <link rel="stylesheet" href="{{ url('/assets/vendors/quill/quill.snow.css') }}">                                   
-                                                <script src="{{ url('/assets/vendors/quill/quill.min.js') }}"></script>
-                                                <script src="{{ url('/assets/js/pages/form-editor.js') }}"></script>
-                                                <script>
-                                                    document.getElementById('add-div-link').addEventListener('click', function(event) {
-                                                        event.preventDefault(); // Mencegah perilaku default link
-                                                        var scriptHTML = '<div id="full">isi</div><input type="hidden" name="komentar" id="hiddenInput"><hr><input type="submit" class="btn btn-success btn-sm" value="Simpan">';
-                                                        document.getElementById('form').innerHTML = scriptHTML;
-                                                    });
-                                                </script>
-                                                </form>
+                                                <a href="{{ url('/penugasan/'.$penugasan->id) }}" class="btn btn-outline-primary">Lihat Tugas</a>
                                             </div>
                                     </div>
                                 </div>
                             </div>
-                            
+                            @endforeach
                         </div>
                     </div>
                 </div>
@@ -138,8 +109,7 @@
                                     <i data-feather="x"></i>
                                     </button>
                                 </div>
-                                <form action="{{ url('/penugasan/create') }}" method="post">
-                                    @csrf
+                                <form action="{{ url('/penugasan') }}" method="get">
                                 <div class="modal-body">
                                         <div class="row">
                                             <div class="col-md-12 col-12">
@@ -150,6 +120,7 @@
                                                         <option value="{{ $jenispenugasan->id }}">{{ $jenispenugasan->jenispenugasan }}</option>
                                                         @endforeach
                                                     </select>
+                                                    <input type="hidden" name="pembelajaran_id" value="{{ $pembelajaran->id }}">
                                                 </div>
                                             </div>
                                         </diV>
