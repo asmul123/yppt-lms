@@ -38,6 +38,13 @@ class PenugasanpdController extends Controller
         if($request->token != $penugasan->token){
             return redirect()->back()->with('failed', 'Token Salah');
         } else {
+            if($penugasan->jenispenugasan_id==1){
+                if($datasoal = $this->Maksespeserta->getsoalpg($data_test->id_soal, 'Y');
+                    $rekaman = "";
+                    foreach ($datasoal as $ds) {
+                        $rekaman = $rekaman . "(_#_)" . $ds->id . "-0";
+                    })
+            }
             $validated['rekaman'] = "";
             $validated['status'] = "1";
             $validated['user_id'] = auth()->user()->id;
@@ -67,9 +74,9 @@ class PenugasanpdController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Penugasan $penugasan)
+    public function edit(Penugasan $penugasanpd)
     {
-        //
+        $penugasan = Penugasan::where('id', $penugasanpd->pembelajaran_id)->first();
     }
 
     /**

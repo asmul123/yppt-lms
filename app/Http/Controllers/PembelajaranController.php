@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pembelajaran;
+use App\Models\Administrasi;
 use App\Models\Penugasan;
 use App\Models\Banksoal;
 use App\Models\Jenispenugasan;
@@ -108,6 +109,15 @@ class PembelajaranController extends Controller
                 'mapels' => Pembelajaran::where('user_id', auth()->user()->id)->groupBy('matapelajaran')->get(),
                 'banksoals' => Banksoal::where('user_id', auth()->user()->id)->paginate(10)->withQueryString(),
                 'pembelajaran' => $pembelajaran
+            ]);
+        } else if ($request->tab=="administrasi"){
+            $administrasis = Administrasi::orderBy('tahunpelajaran_id', 'asc');
+            if (request('tapel_id')) {
+                $administrasis->where('tahunpelajaran_id', request('tapel_id'));
+            }
+            return view('administrasiguru', [
+                'menu' => 'administrasi',
+                'administrasis' => $administrasis->paginate(10)->withQueryString()
             ]);
         }
     }
