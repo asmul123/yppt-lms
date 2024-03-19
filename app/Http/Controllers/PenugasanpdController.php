@@ -6,6 +6,7 @@ use App\Models\Penugasan;
 use App\Models\Pembelajaran;
 use App\Models\Pengerjaan;
 use App\Models\Tahunpelajaran;
+use App\Models\Soal;
 use Illuminate\Http\Request;
 
 class PenugasanpdController extends Controller
@@ -39,13 +40,17 @@ class PenugasanpdController extends Controller
             return redirect()->back()->with('failed', 'Token Salah');
         } else {
             if($penugasan->jenispenugasan_id==1){
-                if($datasoal = $this->Maksespeserta->getsoalpg($data_test->id_soal, 'Y');
+                $datasoal = Soal::where('banksoal_id', $penugasan->banksoal_id)->get();
+                if($datasoal){
                     $rekaman = "";
                     foreach ($datasoal as $ds) {
                         $rekaman = $rekaman . "(_#_)" . $ds->id . "-0";
-                    })
+                    }
+                }
+                $validated['rekaman'] = "";
+            } else {
+                $validated['rekaman'] = "";
             }
-            $validated['rekaman'] = "";
             $validated['status'] = "1";
             $validated['user_id'] = auth()->user()->id;
             Pengerjaan::create($validated);
