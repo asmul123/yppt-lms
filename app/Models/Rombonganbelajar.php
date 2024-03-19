@@ -11,6 +11,7 @@ class Rombonganbelajar extends Model
     protected $fillable = [
         'tahunpelajaran_id',
         'rombongan_belajar',
+        'kurikulum_id',
         'user_id'
     ];
     public function Tahunpelajaran()

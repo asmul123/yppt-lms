@@ -86,10 +86,9 @@
                                 <div class="card-body">
                                     @if ($penugasans->count()==0)
                                     <p class="card-text text-ellipsis">
-                                        Anda belum membuat tugas pada kelas ini
+                                        Belum ada tugas saat ini !
                                     </p>
                                     @endif
-                                    <a href="#" class="btn btn-info" data-toggle="modal" data-target="#tambah-tapel">Tambah Tugas</a>
                                 </div>
                             </div>
                         </div>
@@ -99,44 +98,4 @@
         </div>
     </section>
     <!-- Background variants section end -->
-    <!--BorderLess Modal Modal -->
-                    <div class="modal fade text-left modal-borderless" id="tambah-tapel" tabindex="-1" role="dialog" aria-labelledby="modalTambah" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-scrollable" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Tambah Tugas</h5>
-                                    <button type="button" class="close rounded-pill" data-dismiss="modal" aria-label="Close">
-                                    <i data-feather="x"></i>
-                                    </button>
-                                </div>
-                                <form action="{{ url('/penugasan') }}" method="get">
-                                <div class="modal-body">
-                                        <div class="row">
-                                            <div class="col-md-12 col-12">
-                                                <div class="form-group">
-                                                    <label for="first-name-column">Jenis Penugasan</label>
-                                                    <select class="form-control" name="jenispenugasan_id">
-                                                        @foreach($jenispenugasans as $jenispenugasan)
-                                                        <option value="{{ $jenispenugasan->id }}">{{ $jenispenugasan->jenispenugasan }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                    <input type="hidden" name="pembelajaran_id" value="{{ $pembelajaran->id }}">
-                                                </div>
-                                            </div>
-                                        </diV>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-light-primary" data-dismiss="modal">
-                                            <i class="bx bx-x d-block d-sm-none"></i>
-                                            <span class="d-none d-sm-block">Batal</span>
-                                        </button>
-                                        <input type="submit" class="btn btn-primary ml-1" value="Buat">
-                                            <i class="bx bx-check d-block d-sm-none"></i>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>    
-</div>
-
 @endsection
