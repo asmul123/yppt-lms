@@ -35,25 +35,34 @@ class PenugasanpdController extends Controller
         $validated = $request->validate([
             'penugasan_id' => 'required'
         ]);
-        $penugasan = Penugasan::where('id', $request->penugasan_id)->first();
+        $penugasan = Penugasan::where('id', $request->penugasan_id)->first();        
         if($request->token != $penugasan->token){
             return redirect()->back()->with('failed', 'Token Salah');
         } else {
             if($penugasan->jenispenugasan_id==1){
-                $datasoal = Soal::where('banksoal_id', $penugasan->banksoal_id)->get();
-                if($datasoal){
+                if($penugasan->acaksoal == '1'){
+                $datasoal = Soal::where('banksoal_id', $penugasan->banksoal_id)
+                            ->inRandomOrder()->get();
+                } else {
+                $datasoal = Soal::where('banksoal_id', $penugasan->banksoal_id)
+                                ->inRandomOrder()->get();
+                }
+                if($datasoal->count() != 0){
                     $rekaman = "";
                     foreach ($datasoal as $ds) {
-                        $rekaman = $rekaman . "(_#_)" . $ds->id . "-0";
+                        $rekaman = $rekaman . "(_#_)" . $ds->id . "(-)0";
                     }
                 }
-                $validated['rekaman'] = "";
+                $validated['rekaman'] = $rekaman;
             } else {
                 $validated['rekaman'] = "";
             }
             $validated['status'] = "1";
             $validated['user_id'] = auth()->user()->id;
-            Pengerjaan::create($validated);
+            $cekpengerjaan = Pengerjaan::where('penugasan_id', $request->penugasan_id)->where('user_id', auth()->user()->id)->get();
+            if($cekpengerjaan->count() == 0){
+                Pengerjaan::create($validated);
+            }
             return redirect(url('penugasanpd/'.$request->penugasan_id.'/edit'));
         }
     }

@@ -66,7 +66,7 @@ class PembelajaranpdController extends Controller
                 'jenispenugasans' => Jenispenugasan::all(),
                 'tapels' => Tahunpelajaran::orderBy('tapel_code','asc')->get(),
                 'pembelajaran' => $pembelajaranpd,
-                'penugasans' => Penugasan::where('pembelajaran_id', $pembelajaranpd->id)->where('waktumulai', '>=', $now)->get()
+                'penugasans' => Penugasan::where('pembelajaran_id', $pembelajaranpd->id)->where('waktumulai', '<=', $now)->get()
             ]);
         } else if ($request->tab=="diskusi"){
             return view('diskusi', [
