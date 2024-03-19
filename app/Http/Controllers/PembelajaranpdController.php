@@ -58,14 +58,15 @@ class PembelajaranpdController extends Controller
      */
     public function show(Request $request, Pembelajaran $pembelajaranpd)
     {
-        if($request->tab==""){            
+        if($request->tab==""){    
+            $now = date('Y-m-d H:i:s');        
             return view('penugasanpd', [
                 'menu' => 'pembelajaran',
                 'tab' => 'penugasan',
                 'jenispenugasans' => Jenispenugasan::all(),
                 'tapels' => Tahunpelajaran::orderBy('tapel_code','asc')->get(),
                 'pembelajaran' => $pembelajaranpd,
-                'penugasans' => Penugasan::where('pembelajaran_id', $pembelajaranpd->id)->get()
+                'penugasans' => Penugasan::where('pembelajaran_id', $pembelajaranpd->id)->where('waktumulai', '>=', $now)->get()
             ]);
         } else if ($request->tab=="diskusi"){
             return view('diskusi', [
