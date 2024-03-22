@@ -101,9 +101,16 @@
                     @endif
                     @if($aksesusermenu and $aksesusermenu->hakakses_id == 4)
                     <li class="sidebar-item {{ ($menu === 'administrasi') ? 'active' : '' }}">
-                        <a href="{{ url('/administrasikaprodi') }}" class='sidebar-link'>
+                        <a href="{{ url('/administrasikaprodi/create') }}" class='sidebar-link'>
                             <i data-feather="archive" width="20"></i> 
                             <span>Administrasi Kaprodi</span>
+                        </a>
+                    </li>
+                    @elseif($aksesusermenu and $aksesusermenu->hakakses_id == 2)
+                    <li class="sidebar-item {{ ($menu === 'administrasi') ? 'active' : '' }}">
+                        <a href="{{ url('/dokumenkurikulum') }}" class='sidebar-link'>
+                            <i data-feather="archive" width="20"></i> 
+                            <span>Administrasi Guru</span>
                         </a>
                     </li>
                     @endif

@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Dokumenkaprodi;
+use App\Models\Administrasikaprodi;
 use App\Models\Tahunpelajaran;
 use App\Models\Aksesuser;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 
 class DokumenkaprodiController extends Controller
@@ -65,9 +67,14 @@ class DokumenkaprodiController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Dokumenkaprodi $dokumenkaprodi)
+    public function show(Administrasikaprodi $dokumenkaprodi)
     {
-        //
+        $path = Storage::path('dokumen/'.$dokumenkaprodi->file_administrasi);
+
+        // Get the file extension
+        $extension = pathinfo($path, PATHINFO_EXTENSION);
+
+        return Storage::download('dokumen/'.$dokumenkaprodi->file_administrasi, $dokumenkaprodi->keterangan.".".$extension);
     }
 
     /**

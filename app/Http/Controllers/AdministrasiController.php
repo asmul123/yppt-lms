@@ -40,7 +40,7 @@ class AdministrasiController extends Controller
     {
         $formatberkas = Dokumenkurikulum::where('id', $request->dokumenkurikulum_id)->first();
         $request->validate([
-            'dokumen_file' => 'required|mimes:'.$formatberkas->jenisdokumen.'|max:2048'.$formatberkas->ukurandokumen, // Max 2MB
+            'dokumen_file' => 'required|mimes:'.$formatberkas->jenisdokumen.'|max:'.$formatberkas->ukurandokumen, // Max 2MB
         ]);
 
         if ($request->file('dokumen_file')->isValid()) {
