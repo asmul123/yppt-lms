@@ -1,0 +1,44 @@
+ALTER TABLE `administrasis` CHANGE `dokumen_id` `dokumenkurikulum_id` INT(11) NOT NULL;
+
+ALTER TABLE `administrasis` ADD `pembelajaran_id` INT NOT NULL AFTER `updated_at`, ADD `user_id` INT NOT NULL AFTER `pembelajaran_id`, ADD `status` CHAR(1) NOT NULL AFTER `user_id`;
+
+ALTER TABLE `administrasis` ADD `keterangan` VARCHAR(255) NOT NULL AFTER `file_administrasi`;
+
+CREATE TABLE `dokumenkaprodis` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `tahunpelajaran_id` int(11) NOT NULL,
+  `juduldokumen` varchar(255) NOT NULL,
+  `jenisdokumen` varchar(255) NOT NULL,
+  `ukurandokumen` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+ALTER TABLE `dokumenkaprodis`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `dokumenkaprodis`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+COMMIT;
+
+CREATE TABLE `administrasikaprodis` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `tahunpelajaran_id` int(5) NOT NULL,
+  `dokumenkaprodi_id` int(11) NOT NULL,
+  `file_administrasi` varchar(255) NOT NULL,
+  `keterangan` varchar(255) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `status` char(1) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+ALTER TABLE `administrasikaprodis`
+  ADD PRIMARY KEY (`id`);
+
+
+ALTER TABLE `administrasikaprodis`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+COMMIT;
+

@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Dokumenkurikulum;
+use App\Models\Administrasi;
+use App\Models\Pembelajaran;
 use App\Models\Tahunpelajaran;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class DokumenkurikulumController extends Controller
@@ -13,7 +16,25 @@ class DokumenkurikulumController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::where('role_id', '2')->orderBy('name', 'asc');
+        $tapelaktif = Tahunpelajaran::where('is_active', '1')->first();
+        $tapel_id = $tapelaktif->id;
+        if (request('tapel_id')) {
+            $users->where('tahunpelajaran_id', request('tapel_id'));
+            $tapel_id = request('tapel_id');
+        }
+        if (request('search')) {
+            $users->where('name', 'like', '%' . request('search') . '%')
+                ->orWhere('username', 'like', '%' . request('search') . '%');
+        }
+
+        return view('rekapadministrasiguru', [
+            'menu' => 'administrasi',
+            'smenu' => '',
+            'tapel_id' => $tapel_id,
+            'users' => $users->paginate(10)->withQueryString(),
+            'tapels' => Tahunpelajaran::all()
+        ]);
     }
 
     /**
@@ -50,9 +71,18 @@ class DokumenkurikulumController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Dokumenkurikulum $dokumenkurikulum)
+    public function show(Dokumenkurikulum $dokumenkurikulum, Request $request)
     {
-        //
+        $pembelajaran = Pembelajaran::where('id', $request->pembelajaran_id)->first();
+        $administrasis = Administrasi::where('dokumenkurikulum_id', $dokumenkurikulum->id)
+                            ->where('pembelajaran_id', $request->pembelajaran_id);
+        return view('administrasigurudetail', [
+        'menu' => 'administrasi',
+        'tab' => 'administrasi',
+        'administrasis' => $administrasis->paginate(10)->withQueryString(),
+        'pembelajaran' => $pembelajaran,
+        'dokumenkurikulum' => $dokumenkurikulum
+        ]);
     }
 
     /**

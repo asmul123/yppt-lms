@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pembelajaran;
-use App\Models\Administrasi;
+use App\Models\Dokumenkurikulum;
 use App\Models\Penugasan;
 use App\Models\Banksoal;
 use App\Models\Jenispenugasan;
@@ -111,13 +111,13 @@ class PembelajaranController extends Controller
                 'pembelajaran' => $pembelajaran
             ]);
         } else if ($request->tab=="administrasi"){
-            $administrasis = Administrasi::orderBy('tahunpelajaran_id', 'asc');
-            if (request('tapel_id')) {
-                $administrasis->where('tahunpelajaran_id', request('tapel_id'));
-            }
+            $dokumenkurikulums = Dokumenkurikulum::where('tahunpelajaran_id', $pembelajaran->tahunpelajaran_id)
+                                                    ->where('kurikulum_id', $pembelajaran->rombonganbelajar->kurikulum_id);
             return view('administrasiguru', [
                 'menu' => 'administrasi',
-                'administrasis' => $administrasis->paginate(10)->withQueryString()
+                'tab' => 'administrasi',
+                'pembelajaran' => $pembelajaran,
+                'dokumenkurikulums' => $dokumenkurikulums->paginate(10)->withQueryString()
             ]);
         }
     }

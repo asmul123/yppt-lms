@@ -2,16 +2,12 @@
 
 @section('content')
 
-
 <div class="main-content container-fluid">
     <div class="page-title">
-        <h3>Daftar Administrasi Pembelajaran</h3>
+        <h3>Daftar Guru</h3>
     </div>
     <section class="section">
         <div class="card">
-            <div class="card-header">
-                Daftar Tagihan Administrasi
-            </div>
             <div class="card-body">
                 @if (session('success'))
                 <div class="alert alert-light-success color-warning">{{ session('success') }}</div>
@@ -25,8 +21,16 @@
                         <div class="row justify-content-end">
                                 <div class="col-md-3 col-3">
                                     <div class="form-group">
-                                        <input type="text" class="form-control"  name="search" placeholder="Cari" value="{{ request('search') }}">
+                                            <select class="form-control" onchange="this.form.submit()" name="tapel_id">
+                                                <option value="">Filter Tahun Pelajaran</option>
+                                                @foreach ($tapels as $tapel)
+                                                <option value="{{ $tapel->id }}" {{ (request('tapel_id') == $tapel->id ? 'selected' : false) }}>{{ $tapel->tahunpelajaran }}</option>
+                                                @endforeach
+                                            </select>
                                     </div>
+                                </div>
+                                <div class="col-md-6 col-6"></div>
+                                <div class="col-md-3 col-3">
                                 </div>
                         </div>
                     </form>
@@ -34,28 +38,20 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Tahun Pelajaran</th>
-                            <th>Jenis Dokumen</th>
-                            <th>Status</th>
+                            <th>Nama Kaprodi</th>
+                            <th>Jumlah Dokumen</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($administrasis as $administrasi)
+                        @foreach($kaprodis as $kaprodi)
                         <tr>
-                            <td>{{ $administrasis->firstItem() + $loop->index }}</td>
-                            <td>{{ $administrasi->tahunpelajaran->tahunpelajaran }}</td>
-                            <td>{{ $administrasi->dokumen->jenisdokumen }}</td>
-                            <td></td>
+                            <td>{{ $kaprodis->firstItem() + $loop->index }}</td>
+                            <td>{{ $kaprodi->user->name }}</td>
+                            <td>{{ App\Models\Administrasikaprodi::where('tahunpelajaran_id', $tapel_id)->where('user_id', $kaprodi->user->id)->get()->count() }}</td>
                             <td>
                                 <div class="btn-group mb-3" role="group" aria-label="Basic example">
-                                    <a href="/administrasi/{{ $administrasi->id }}" class="badge bg-info"><i data-feather="upload"></i></a>
-                                    <a href="/administrasi/{{ $administrasi->id }}" class="badge bg-waring"><i data-feather="download"></i></a>
-                                    <form action="/administrasi/{{ $administrasi->id }}" method="post">
-                                        @method('delete')
-                                        @csrf
-                                        <button class="badge icon bg-danger border-0" onclick="return confirm('Yakin akan menghapus tahun pelajaran ini?')"><i data-feather="trash"></i></button>
-                                    </form>
+                                    <a href="{{ url('/administrasikaprodi/'.$kaprodi->user->id) }}" class="badge icon bg-info"><i data-feather="list"></i> Lihat Dokumen</a>
                                 </div>
                             </td>
                         </tr>
@@ -64,7 +60,7 @@
                   </table>
                   <div class="row mt-3">
                     <div class="col-md-12 col-12">
-                        {{ $administrasis->links() }}
+                        {{ $kaprodis->links() }}
                     </div>
                   </div>
                 </div>

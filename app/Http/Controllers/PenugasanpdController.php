@@ -91,6 +91,11 @@ class PenugasanpdController extends Controller
     public function edit(Penugasan $penugasanpd)
     {
         $penugasan = Penugasan::where('id', $penugasanpd->pembelajaran_id)->first();
+        return view('pengerjaankuis', [
+            'tapels' => Tahunpelajaran::orderBy('tapel_code','asc')->get(),
+            'penugasan' => $penugasanpd,
+            'pembelajaran' => Pembelajaran::where('id', $penugasanpd->pembelajaran_id)->first()
+        ]);
     }
 
     /**

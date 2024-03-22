@@ -29,6 +29,10 @@
     <div class="sidebar-header">
         <img src="{{ url('/') }}/assets/images/banner.svg" alt="" srcset="">
     </div>
+    @php
+    $tapelaktifmenu = App\Models\Tahunpelajaran::where('is_active', '1')->first()->id;
+    $aksesusermenu = App\Models\Aksesuser::where('user_id',auth()->user()->id)->where('tahunpelajaran_id', $tapelaktifmenu)->first();
+    @endphp
     <div class="sidebar-menu">
         <ul class="menu">
                 <li class='sidebar-title'>Main Menu</li>
@@ -60,29 +64,49 @@
                     </a>                    
                     <ul class="submenu {{ ($smenu === 'user') ? 'active' : '' }}">                        
                         <li>
-                            <a href="{{ url('/') }}/users">Data Pengguna</a>
+                            <a href="{{ url('/users') }}">Data Pengguna</a>
                         </li>
                         <li>
-                            <a href="{{ url('/') }}/rombonganbelajar">Data Rombongan Belajar</a>
+                            <a href="{{ url('/rombonganbelajar') }}">Data Rombongan Belajar</a>
                         </li>
                         <li>
-                            <a href="{{ url('/') }}/kurikulum">Data Kurikulum</a>
+                            <a href="{{ url('/kurikulum') }}">Data Kurikulum</a>
+                        </li>
+                        <li>
+                            <a href="{{ url('/dokumenkaprodi') }}">Data Dokumen Kaprodi</a>
                         </li>
                     </ul>
                 </li>
                 @elseif(auth()->user()->role->id == 2)
-                <li class="sidebar-item {{ ($menu === 'pembelajaran') ? 'active' : '' }}">
-                    <a href="{{ url('/') }}/pembelajaran" class='sidebar-link'>
-                        <i data-feather="book-open" width="20"></i> 
-                        <span>Pembelajaran</span>
-                    </a>
-                </li>
-                {{-- <li class="sidebar-item {{ ($menu === 'administrasi') ? 'active' : '' }}">
-                    <a href="{{ url('/') }}/administrasi" class='sidebar-link'>
-                        <i data-feather="archive" width="20"></i> 
-                        <span>Administrasi</span>
-                    </a>
-                </li> --}}
+                    @if($aksesusermenu and $aksesusermenu->hakakses_id == 1)
+                        <li class="sidebar-item {{ ($menu === 'administrasi') ? 'active' : '' }}">
+                            <a href="{{ url('/dokumenkurikulum') }}" class='sidebar-link'>
+                                <i data-feather="archive" width="20"></i> 
+                                <span>Administrasi Guru</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item {{ ($menu === 'kaprodi') ? 'active' : '' }}">
+                            <a href="{{ url('/administrasikaprodi') }}" class='sidebar-link'>
+                                <i data-feather="archive" width="20"></i> 
+                                <span>Administrasi Kaprodi</span>
+                            </a>
+                        </li>
+                    @else
+                    <li class="sidebar-item {{ ($menu === 'pembelajaran') ? 'active' : '' }}">
+                        <a href="{{ url('/') }}/pembelajaran" class='sidebar-link'>
+                            <i data-feather="book-open" width="20"></i> 
+                            <span>Pembelajaran</span>
+                        </a>
+                    </li>                    
+                    @endif
+                    @if($aksesusermenu and $aksesusermenu->hakakses_id == 4)
+                    <li class="sidebar-item {{ ($menu === 'administrasi') ? 'active' : '' }}">
+                        <a href="{{ url('/administrasikaprodi') }}" class='sidebar-link'>
+                            <i data-feather="archive" width="20"></i> 
+                            <span>Administrasi Kaprodi</span>
+                        </a>
+                    </li>
+                    @endif
                 @elseif(auth()->user()->role->id == 3)
                 <li class="sidebar-item {{ ($menu === 'pembelajaran') ? 'active' : '' }}">
                     <a href="{{ url('/') }}/pembelajaranpd" class='sidebar-link'>

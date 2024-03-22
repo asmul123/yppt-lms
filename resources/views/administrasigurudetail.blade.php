@@ -52,48 +52,107 @@
                         <div class="card-body">                                                      
                             @include('layouts.tab')
                             <div class="card-header">
-                                <h1 class="card-title pl-1">Daftar Administrasi Pembelajaran</h1>
+                                <h1 class="card-title pl-1">Detail Administrasi Pembelajaran</h1>
                                 <br>
                                 Tahun Pelajaran : {{ $pembelajaran->tahunpelajaran->tahunpelajaran }}<br>
-                                {{ $pembelajaran->rombonganbelajar->kurikulum->kurikulum }}
+                                {{ $pembelajaran->rombonganbelajar->kurikulum->kurikulum }}<br>
+                                {{ $dokumenkurikulum->juduldokumen }}<hr>
+                                <a href="#" class="badge bg-primary" data-toggle="modal" data-target="#unggah"><i data-feather="upload"></i> Unggah</a>
+                                <!--BorderLess Modal Modal -->
+                                <div class="modal fade text-left modal-borderless" id="unggah" tabindex="-1" role="dialog" aria-labelledby="modalTambah" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-scrollable" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Unggah Dokumen Administrasi</h5>
+                                                <button type="button" class="close rounded-pill" data-dismiss="modal" aria-label="Close">
+                                                <i data-feather="x"></i>
+                                                </button>
+                                            </div>
+                                            <form action="{{ url('/administrasi') }}" method="post" enctype="multipart/form-data">
+                                                @csrf
+                                            <div class="modal-body">
+                                                    <div class="row">
+                                                        <div class="col-md-12 col-12">
+                                                            <div class="form-group">
+                                                                <label for="first-name-column">Jenis Dokumen</label>
+                                                                <input type="text" class="form-control" name="juduldokumen" value="{{ $dokumenkurikulum->juduldokumen }}" readonly>
+                                                                <input type="hidden" class="form-control" name="tahunpelajaran_id" value="{{ $pembelajaran->tahunpelajaran_id }}">
+                                                                <input type="hidden" class="form-control" name="dokumenkurikulum_id" value="{{ $dokumenkurikulum->id }}">
+                                                                <input type="hidden" class="form-control" name="pembelajaran_id" value="{{ $pembelajaran->id }}">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12 col-12">
+                                                            <div class="form-group">
+                                                                <label for="first-name-column">Keterangan</label>
+                                                                <input type="text" class="form-control" name="keterangan">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12 col-12">
+                                                            <div class="form-group">
+                                                                <label for="first-name-column">Berkas</label>
+                                                                <input type="file" id="first-name-column" class="form-control"  name="dokumen_file">
+                                                            </div>
+                                                            <sup>Format Berkas : <span id="jenis"></span>, Max. <span id="ukuran"></span> Byte</sup>
+                                                        </div>
+                                                    </diV>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-light-primary" data-dismiss="modal">
+                                                        <i class="bx bx-x d-block d-sm-none"></i>
+                                                        <span class="d-none d-sm-block">Keluar</span>
+                                                    </button>
+                                                    <input type="submit" class="btn btn-primary ml-1" value="Simpan">
+                                                        <i class="bx bx-check d-block d-sm-none"></i>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div> 
                             </div>
                             <table class="table table-striped mb-0">
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>Jenis Dokumen</th>
-                                            <th>Format File</th>
-                                            <th>Jumlah Dokumen</th>
+                                            <th>Keterangan</th>
+                                            <th>Status</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @php
-                                            $i = 'a';
+                                        $i = 'a';
                                         @endphp
-                                        @foreach($dokumenkurikulums as $dokumenkurikulum)
+                                        @foreach($administrasis as $administrasi)
                                         <tr>
-                                            <td>{{ $dokumenkurikulums->firstItem() + $loop->index }}</td>
-                                            <td>{{ $dokumenkurikulum->juduldokumen }}</td>
-                                            <td>{{ $dokumenkurikulum->jenisdokumen }}</td>
-                                            <td>{{  App\Models\Administrasi::where('dokumenkurikulum_id', $dokumenkurikulum->id)->where('pembelajaran_id',$pembelajaran->id)->count() }}</td>
+                                            <td>{{ $administrasis->firstItem() + $loop->index }}</td>
+                                            <td>{{ $administrasi->keterangan }}</td>
+                                            <td>
+                                            @if($administrasi->status == 1)
+                                             <span class="badge bg-warning">diajukan</span>
+                                            @elseif($administrasi->status == 2)
+                                                <span class="badge bg-success">diterima</span>
+                                            @elseif($administrasi->status == 3)
+                                                <span class="badge bg-danger">ditolak</span>
+                                            @endif
+                                            </td>
                                             <td>
                                                 <div class="btn-group mb-3" role="group" aria-label="Basic example">
-                                                    <a href="{{ url('/dokumenkurikulum/'.$dokumenkurikulum->id.'?pembelajaran_id='.$pembelajaran->id) }}" class="badge bg-info"><i data-feather="list"></i> Lihat</a>
-                                                    <a href="#" class="badge bg-primary" data-toggle="modal" data-target="#unggah" onclick="apData{{ $i }}()"><i data-feather="upload"></i> Unggah</a>
+                                                    <a href="#" class="badge bg-warning" data-toggle="modal" data-target="#unggah" onclick="apData{{ $i }}()"><i data-feather="edit"></i> Edit</a>
+                                                    <a href="{{ url('administrasi/'.$administrasi->id) }}" class="badge bg-primary"><i data-feather="download"></i> Unduh</a>
+                                                    <a href="#" class="badge bg-danger"><i data-feather="trash"></i> Hapus</a>
                                                     <script>
                                                         function apData{{ $i }}() {
-                                                            let judul{{ $i }} = "{{ $dokumenkurikulum->juduldokumen }}";
-                                                            let dokumen{{ $i }} = "{{ $dokumenkurikulum->id }}";
-                                                            let jenis{{ $i }} = "{{ $dokumenkurikulum->jenisdokumen }}";
-                                                            let ukuran{{ $i }} = "{{ $dokumenkurikulum->ukurandokumen }}";
-
+                                                            // let judul{{ $i }} = "{{ $administrasi->juduldokumen }}";
+                                                            // let dokumen{{ $i }} = "{{ $administrasi->id }}";
+                                                            // let jenis{{ $i }} = "{{ $administrasi->jenisdokumen }}";
+                                                            // let ukuran{{ $i }} = "{{ $administrasi->ukurandokumen }}";
+                                                            
                                                             document.getElementById("juduldokumen").value = judul{{ $i }};
-                                                            document.getElementById("dokumenkurikulum_id").value = dokumen{{ $i }};
+                                                            document.getElementById("administrasi_id").value = dokumen{{ $i }};
                                                             document.getElementById("jenis").innerText = jenis{{ $i }};
                                                             document.getElementById("ukuran").innerText = ukuran{{ $i }};
                                                         }
-                                                    </script>
+                                                        </script>
                                                     @php
                                                     $i++;
                                                     @endphp
@@ -105,7 +164,7 @@
                                   </table>
                                   <div class="row mt-3">
                                     <div class="col-md-12 col-12">
-                                        {{ $dokumenkurikulums->links() }}
+                                        {{ $administrasis->links() }}
                                     </div>
                                   </div>
                                 </div>
