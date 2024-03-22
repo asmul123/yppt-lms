@@ -74,7 +74,6 @@ class AdministrasiController extends Controller
         // Get the file extension
         $extension = pathinfo($path, PATHINFO_EXTENSION);
 
-        echo $extension;
         return Storage::download('dokumen/'.$administrasi->file_administrasi, $administrasi->keterangan.".".$extension);
     }
 
