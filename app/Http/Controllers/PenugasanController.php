@@ -67,6 +67,7 @@ class PenugasanController extends Controller
                 'menu' => 'pembelajaran',
                 'tab' => 'penugasan',
                 'pengerjaan' => $pengerjaan,
+                'penugasan' => Penugasan::where('id', $pengerjaan->penugasan_id)->first(),
                 'pembelajaran' => Pembelajaran::where('id', $pengerjaan->penugasan->pembelajaran_id)->first()
                 ]);
             

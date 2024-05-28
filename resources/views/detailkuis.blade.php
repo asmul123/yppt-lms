@@ -57,6 +57,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            @if($penugasan->jenispenugasan_id == 1)
                                             @php
                                                 $betul = 0;
                                                 $rt = explode("(_#_)", $pengerjaan->rekaman);
@@ -109,6 +110,8 @@
                                             <tr>
                                                 <td colspan="3">
                                                     <form action="{{ url('pengerjaan/'.$pengerjaan->id) }}" method="post">
+                                                        @csrf
+                                                        @method('put')
                                                     Jumlah Benar : {{ $betul }}<br>
                                                     Nilai Saat ini : {{ number_format($pengerjaan->nilai,2) }}<br>
                                                     Ubah Nilai : <input type="text" name="nilai" autofocus required size="8">
@@ -116,6 +119,30 @@
                                                     </form>
                                                 </td>
                                             </tr>
+                                            @else
+                                            <tr>
+                                                <td>1</td>
+                                                <td>
+                                                    Soal :<br>
+                                                    {!! $penugasan->deskripsitugas !!}
+                                                    <hr>
+                                                    Jawaban :<br>
+                                                    {!! $pengerjaan->rekaman !!}
+                                                </td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="3">
+                                                    <form action="{{ url('pengerjaan/'.$pengerjaan->id) }}" method="post">
+                                                        @csrf
+                                                        @method('put')
+                                                    Nilai Saat ini : {{ number_format($pengerjaan->nilai,2) }}<br>
+                                                    Ubah Nilai : <input type="text" name="nilai" autofocus required size="8">
+                                                    <button type="submit" class="badge bg-primary border-0">Simpan</button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                            @endif
                                         </tbody>
                                       </table>
                                     </div>

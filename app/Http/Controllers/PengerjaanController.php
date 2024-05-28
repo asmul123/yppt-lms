@@ -65,7 +65,12 @@ class PengerjaanController extends Controller
      */
     public function update(Request $request, Pengerjaan $pengerjaan)
     {
-        //
+        $data = array(
+            'nilai' => $request->nilai
+        );
+        Pengerjaan::where('id',$pengerjaan->id)
+            ->update($data);
+        return redirect('/penugasan/create?act=detail&pengerjaan_id='.$pengerjaan->id);
     }
 
     /**
