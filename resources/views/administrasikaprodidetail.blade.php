@@ -124,7 +124,7 @@
                                             <td>
                                                 <div class="btn-group mb-3" role="group" aria-label="Basic example">
                                                     <a href="#" class="badge bg-warning" data-toggle="modal" data-target="#unggah" onclick="apData{{ $i }}()"><i data-feather="edit"></i> Edit</a>
-                                                    <a href="{{ url('administrasikaprodi/'.$administrasikaprodi->id) }}" class="badge bg-primary"><i data-feather="download"></i> Unduh</a>
+                                                    <a href="{{ url('dokumenkaprodi/'.$administrasikaprodi->id) }}" class="badge bg-primary"><i data-feather="download"></i> Unduh</a>
                                                     <a href="#" class="badge bg-danger"><i data-feather="trash"></i> Hapus</a>
                                                     <script>
                                                         function apData{{ $i }}() {

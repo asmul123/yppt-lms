@@ -14,7 +14,12 @@ class BanksoalController extends Controller
      */
     public function index()
     {
-        //
+        return view('banksoal', [
+            'menu' => 'banksoal',
+            'tab' => 'banksoal',
+            'mapels' => Pembelajaran::where('user_id', auth()->user()->id)->groupBy('matapelajaran')->get(),
+            'banksoals' => Banksoal::where('user_id', auth()->user()->id)->paginate(10)->withQueryString()
+        ]);
     }
 
     /**

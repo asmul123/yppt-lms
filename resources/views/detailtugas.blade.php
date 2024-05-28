@@ -21,25 +21,6 @@
                     </div>
                 </div>
                 <div class="card">
-                    <div class="card-header">                           
-                            @if (session('success'))
-                            <div class="alert alert-light-success color-warning">{{ session('success') }}</div>
-                            @endif
-                            
-                            @if (session('failed'))
-                            <div class="alert alert-light-danger color-warning">{{ session('failed') }}</div>
-                            @endif
-
-                            <form>
-                                <div class="row justify-content-end">
-                                        <div class="col-md-4 col-4">
-                                            <div class="form-group">
-                                                <input type="text" class="form-control"  name="search" placeholder="Cari Tugas" value="{{ request('search') }}">
-                                            </div>
-                                        </div>
-                                </div>
-                            </form>
-                    </div>
                     <div class="card-content">
                         <div class="card-body">                                                      
                             @include('layouts.tab')
@@ -65,12 +46,12 @@
                                                     <div class="col-md-9 col-9">
                                                         <div class="btn-group" role="group" aria-label="Basic example">
                                                             <button class="btn btn-sm btn-outline-dark">
-                                                                Token : {{ $penugasan->token }}
+                                                                Token : {{ ($penugasan->token == NULL) ? 'Tidak Aktif' : $penugasan->token }}
                                                             </button>
-                                                            <a href="{{ url('penugasan/release_token/'.$penugasan->id) }}" class="btn btn-sm btn-warning">
+                                                            <a href="{{ url('penugasan/create/?act=release&id_tugas='.$penugasan->id) }}" class="btn btn-sm btn-warning">
                                                                 <i data-feather="refresh-cw"></i>
                                                             </a>
-                                                            <a href="{{ url('penugasan/hapus_token/'.$penugasan->id) }}" class="btn btn-sm btn-danger">
+                                                            <a href="{{ url('penugasan/create/?act=hapus&id_tugas='.$penugasan->id) }}" class="btn btn-sm btn-danger">
                                                                 <i data-feather="trash"></i>
                                                             </a> 
                                                         </div>
@@ -113,15 +94,35 @@
                                                     }
                                                     @endphp
                                                 </td>
-                                                <td>{{ ($pengerjaan ? $pengerjaan->nilai : false) }}</td>
+                                                <td>{{ ($pengerjaan ? number_format($pengerjaan->nilai,2) : false) }}</td>
                                                 <td>
                                                     <div class="btn-group mb-3" role="group" aria-label="Basic example">
-                                                        <a href="{{ url('/') }}/banksoal/{{ $anggotarombel->id }}/edit" class="badge icon bg-primary"><i data-feather="list"></i></a>
-                                                        <form action="{{ url('/') }}/soal/{{ $anggotarombel->id }}" method="post">
-                                                            @method('delete')
-                                                            @csrf
-                                                            <button class="badge icon bg-danger border-0" onclick="return confirm('Yakin akan menghapus user ini?')"><i data-feather="trash"></i></button>
-                                                        </form>
+                                                        @php
+                                                        if($pengerjaan){
+                                                        @endphp
+                                                        <a href="{{ url('/') }}/penugasan/create?act=detail&pengerjaan_id={{ $pengerjaan->id }}" class="badge icon bg-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Lihat Pekerjaan Siswa"><i data-feather="list"></i></a>
+                                                        <a href="{{ url('/') }}/penugasan/create?act=reset&pengerjaan_id={{ $pengerjaan->id }}" class="badge icon bg-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Atur Ulang/Hapus Pekerjaan Siswa" onclick="return confirm('Yakin akan menghapus pekerjaan siswa ini?')"><i data-feather="rotate-ccw"></i></a>
+                                                        <a href="{{ url('/') }}/penugasan/create?act=selesai&pengerjaan_id={{ $pengerjaan->id }}" class="badge icon bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Submit Pekerjaan Siswa"><i data-feather="check-square"></i></a>
+                                                        @php
+                                                            if($pengerjaan->status == '3'){
+                                                        @endphp
+                                                        <a href="{{ url('/') }}/penugasan/create?act=blokir&pengerjaan_id={{ $pengerjaan->id }}" class="badge icon bg-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Buka Blokir Siswa"><i data-feather="check-circle"></i></a>
+                                                        @php
+                                                            } else if ($pengerjaan->status == '1'){
+                                                        @endphp
+                                                        <a href="{{ url('/') }}/penugasan/create?act=blokir&pengerjaan_id={{ $pengerjaan->id }}" class="badge icon bg-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Blokir Siswa"><i data-feather="slash"></i></a>
+                                                        @php
+                                                            }
+                                                        @endphp
+                                                        <script>
+                                                            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+                                                            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                                                            return new bootstrap.Tooltip(tooltipTriggerEl)
+                                                            })
+                                                        </script>
+                                                        @php
+                                                        }
+                                                        @endphp
                                                     </div>
                                                 </td>
                                             </tr>

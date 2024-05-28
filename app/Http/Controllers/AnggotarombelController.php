@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Anggotarombel;
+use App\Models\User;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 use Illuminate\Http\Request;
 
 class AnggotarombelController extends Controller
@@ -20,7 +22,7 @@ class AnggotarombelController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -83,5 +85,59 @@ class AnggotarombelController extends Controller
     {        
         Anggotarombel::destroy($anggotarombel->id);
         return redirect()->back()->with('success', 'Anggota Rombongan belajar berhasil dihapus');
+    }
+
+    public function import(Request $request)
+    {
+        if ($request->hasFile('excel_file')) {
+            $path = $request->file('excel_file')->getRealPath();
+
+            $spreadsheet = IOFactory::load($path);
+            $sheet = $spreadsheet->getActiveSheet();
+            $berhasil = 0;
+            $gagal = 0;
+            $i=1;
+            $validated = $request->validate([
+                'tahunpelajaran_id' => 'required',
+                'rombonganbelajar_id' => 'required'
+            ]);
+            foreach ($sheet->getRowIterator() as $row) {
+                if($i!=1){
+                    $cellIterator = $row->getCellIterator();
+                    $cellIterator->setIterateOnlyExistingCells(false); // Loop semua sel
+
+                    // Mengambil nilai dari setiap sel dalam baris
+                    $data = [];
+                    foreach ($cellIterator as $cell) {
+                        $data[] = $cell->getValue();
+                    }
+                    $user_id = User::where('username', $data[0])->where('role_id','3')->first();
+                    // Simpan data ke dalam database menggunakan model
+                    if($user_id){
+                        $dataisi = ([
+                            'tahunpelajaran_id' => $validated['tahunpelajaran_id'],
+                            'rombonganbelajar_id' => $validated['rombonganbelajar_id'],
+                            'user_id' => $user_id->id
+                            // Tambahkan kolom lain sesuai kebutuhan
+                        ]);
+                    }
+                    $cekAnggota = Anggotarombel::where('tahunpelajaran_id', $validated['tahunpelajaran_id'])
+                                    ->where('user_id',$user_id->id)->first();
+                    if($cekAnggota || $data[0]==""){
+                        $gagal++;
+                    } else if(!$user_id){
+                        $gagal++;
+                    } else {
+                        Anggotarombel::create($dataisi);
+                        $berhasil++;
+                    }
+                }
+                $i++;
+                
+            }
+            return redirect()->back()->with('success', $berhasil . ' Anggota rombel berhasil ditambahkan ' . $gagal . ' Anggotarombel gagal ditambahkan');
+        }
+
+        return redirect()->back()->with('failed', 'Silahkan Unggah Berkas!');
     }
 }

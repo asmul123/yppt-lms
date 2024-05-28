@@ -16,4 +16,10 @@ class Pengerjaan extends Model
         'status',
         'user_id'
     ];
+
+    
+    public function Penugasan()
+    {
+        return $this->belongsTo(Penugasan::class);
+    }
 }

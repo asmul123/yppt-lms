@@ -41,13 +41,10 @@
                             @include('layouts.tabpd')
                             <div class="card border border-light">
                                 <div class="card-header">
-                                    <h1 class="card-title pl-1">Konfirmasi Tugas</h1>
+                                    <h1 class="card-title pl-1">Status Tugas</h1>
                                 </div>
                                 <div class="card-content">
                                     <div class="card-body">
-                                        <form class="form" method="post" action="{{ url('/penugasanpd/'.$penugasan->id) }}">
-                                            @method('put')
-                                            @csrf
                                             <div class="row">
                                                 <div class="col-md-12 col-12">
                                                     <div class="panel-body">
@@ -63,28 +60,21 @@
                                                                 <td><?= $penugasan->durasi ?></td>
                                                             </tr>
                                                             <tr>
-                                                                <td>Token</td>
+                                                                <td>Status</td>
                                                                 <td>:</td>
-                                                                <td>
-                                                                    <input type="text" name="token" autofocus required size="8">
-                                                                </td>
+                                                                <td>{{ $status }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Nilai</td>
+                                                                <td>:</td>
+                                                                <td>{{ number_format($pengerjaan->nilai,2) }}</td>
                                                             </tr>
                                                         </table>
                                                 </div>
                                                 <div class="col-12 d-flex mt-3">
-                                                    <button type="submit" class="btn btn-primary mr-1 mb-1">Mulai</button>
+                                                    <a href="{{ url('pembelajaranpd/'.$pembelajaran->id) }}" class="btn btn-warning mr-1 mb-1">Kembali</a>
                                                 </div>
                                             </div>
-                                        </form>
-                                        <script type="text/javascript">                                    
-                                            $(document).ready(function() {
-                                                $('.deskripsi').summernote({
-                                                    placeholder: 'Tuliskan Deskripsi',
-                                                    tabsize: 1,
-                                                    height: 100
-                                                });
-                                            });
-                                        </script>
                                     </div>
                                 </div>                           
                             </div>

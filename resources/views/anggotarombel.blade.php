@@ -31,7 +31,12 @@
                                                     <select class="choices form-select" multiple="multiple" name="user_id[]">
                                                         <option value="">Pilih Peserta Didik</option>
                                                         @foreach ($users as $user)
-                                                        <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                                        @php
+                                                        $cekanggota = App\Models\Anggotarombel::where('tahunpelajaran_id', $rombonganbelajar->tahunpelajaran_id)->where('user_id',$user->id)->count();            
+                                                        @endphp
+                                                        @if($cekanggota==0)
+                                                        <option value="{{ $user->id }}">{{ $user->username." | ".$user->name }}</option>
+                                                        @endif
                                                         @endforeach
                                                     </select>
                                                     <input type="hidden" name="tahunpelajaran_id" value="{{ $rombonganbelajar->tahunpelajaran_id }}">
@@ -63,13 +68,15 @@
                                 <i data-feather="x"></i>
                                 </button>
                             </div>
-                            <form action="{{ url('/') }}/angotarombel/import" method="post" enctype="multipart/form-data">
+                            <form action="{{ url('/') }}/anggotarombel/import" method="post" enctype="multipart/form-data">
                                 @csrf
                             <div class="modal-body">
                                     <div class="row">
                                         <div class="col-md-12 col-12">
                                             <div class="form-group">
                                                 <label for="first-name-column">File</label>
+                                                <input type="hidden" name="rombonganbelajar_id" value="{{ $rombonganbelajar->id }}">
+                                                <input type="hidden" name="tahunpelajaran_id" value="{{ $rombonganbelajar->tahunpelajaran_id }}">
                                                 <input type="file" id="first-name-column" class="form-control"  name="excel_file">
                                             </div>
                                             <a href="{{ url('/') }}/assets/file/format_anggota_rombel.xlsx">Download Format</a>

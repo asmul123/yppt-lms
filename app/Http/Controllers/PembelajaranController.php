@@ -9,6 +9,7 @@ use App\Models\Banksoal;
 use App\Models\Jenispenugasan;
 use App\Models\Tahunpelajaran;
 use App\Models\Rombonganbelajar;
+use App\Models\Anggotarombel;
 use Illuminate\Http\Request;
 
 class PembelajaranController extends Controller
@@ -92,7 +93,7 @@ class PembelajaranController extends Controller
                 'jenispenugasans' => Jenispenugasan::all(),
                 'tapels' => Tahunpelajaran::orderBy('tapel_code','asc')->get(),
                 'pembelajaran' => $pembelajaran,
-                'penugasans' => Penugasan::where('pembelajaran_id', $pembelajaran->id)->get()
+                'penugasans' => Penugasan::where('pembelajaran_id', $pembelajaran->id)->orderBy('waktumulai', 'desc')->get()
             ]);
         } else if ($request->tab=="diskusi"){
             return view('diskusi', [
@@ -119,7 +120,17 @@ class PembelajaranController extends Controller
                 'pembelajaran' => $pembelajaran,
                 'dokumenkurikulums' => $dokumenkurikulums->paginate(10)->withQueryString()
             ]);
-        }
+        } else if ($request->tab=="kehadiran"){
+            $anggotarombels = Anggotarombel::where('rombonganbelajar_id', $pembelajaran->rombonganbelajar_id);
+            $kehadirans = Anggotarombel::where('rombonganbelajar_id', $pembelajaran->rombonganbelajar_id);
+            return view('kehadiran', [
+                'menu' => 'pembelajaran',
+                'tab' => 'kehadiran',
+                'pembelajaran' => $pembelajaran,
+                'anggotarombels' => $anggotarombels->paginate(10)->withQueryString(),
+                'kehadirans' => $kehadirans->get()
+                ]);
+            }
     }
 
     /**

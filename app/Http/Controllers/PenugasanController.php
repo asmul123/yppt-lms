@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Anggotarombel;
 use App\Models\Penugasan;
+use App\Models\Pengerjaan;
 use App\Models\Banksoal;
 use App\Models\Pembelajaran;
 use App\Models\Tahunpelajaran;
@@ -33,7 +34,64 @@ class PenugasanController extends Controller
      */
     public function create()
     {
-        //
+        if(request('act')=='release'){
+            $cekPenugasan = Penugasan::where('id', request('id_tugas'))->where('user_id', auth()->user()->id)
+                                        ->first();
+            if($cekPenugasan){            
+                $token = substr(str_shuffle(str_repeat($x = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil(6 / strlen($x)))), 1, 6);
+                $data = array(
+                    'token' => $token
+                );
+                Penugasan::where('id',request('id_tugas'))->update($data);
+                return redirect(url('/penugasan/'.request('id_tugas')))->with('success', 'Token berhasil diubah');
+            } else {
+                return redirect(url('/penugasan/'.request('id_tugas')))->with('failed', 'Data tugas tidak ditemukan');                
+            }
+        }
+        else if(request('act')=='hapus'){
+            $cekPenugasan = Penugasan::where('id', request('id_tugas'))->where('user_id', auth()->user()->id)
+                                        ->first();
+            if($cekPenugasan){      
+                $data = array(
+                    'token' => NULL
+                );
+                Penugasan::where('id',request('id_tugas'))->update($data);
+                return redirect(url('/penugasan/'.request('id_tugas')))->with('success', 'Token berhasil dihapus');
+            } else {
+                return redirect(url('/penugasan/'.request('id_tugas')))->with('failed', 'Data tugas tidak ditemukan');                
+            }            
+        }  
+        else if (request('act')=='detail'){
+            $pengerjaan = Pengerjaan::where('id', request('pengerjaan_id'))->first();
+            return view('detailkuis', [
+                'menu' => 'pembelajaran',
+                'tab' => 'penugasan',
+                'pengerjaan' => $pengerjaan,
+                'pembelajaran' => Pembelajaran::where('id', $pengerjaan->penugasan->pembelajaran_id)->first()
+                ]);
+            
+        }
+        else if (request('act')=='reset'){
+            Pengerjaan::destroy(request('pengerjaan_id'));
+            return redirect()->back()->with('success', 'Pekerjaan berhasil dihapus/diatur ulang');
+        }
+        else if (request('act')=='selesai'){
+            $data = array(
+                'status' => '2'
+            );
+            Pengerjaan::where('id',request('pengerjaan_id'))->update($data);
+            return redirect()->back()->with('success', 'Pekerjaan berhasil diselesaikan');
+        }
+        else if (request('act')=='blokir'){
+            $data = array(
+                'status' => '3'
+            );
+            Pengerjaan::where('id',request('pengerjaan_id'))->update($data);
+            return redirect()->back()->with('success', 'Pekerjaan berhasil diblokir');
+        }
+        else {
+            return redirect(url('/penugasan/'.request('id_tugas')))->with('failed', 'Aksi tidak ditemukan');
+        }
     }
 
     /**

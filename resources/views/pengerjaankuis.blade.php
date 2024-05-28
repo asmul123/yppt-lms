@@ -1,174 +1,137 @@
-@extends('layouts.soal')
+@extends('layouts.main')
 
 @section('content')
 
 
 <div class="main-content container-fluid">
-    <!-- list group with contextual & horizontal start -->
-    <section id="list-group-contextual">
-        <div class="content-wrapper">
-            <div class="content-container">
-                <div class="main-page">
-                    <div class="container-fluid">
-                        <div class="row page-title-div">
-                            <div class="col-md-12">
-                                <h2 class="title"><?= $data_test->judul_soal ?>
-                                    <div style="float: right;">
-                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-                                            Daftar Soal
-                                        </button>
-                                    </div>
-                                </h2>
+    <section class="section">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-6">                                
+                                Soal No : <button class="btn btn-outline-primary">{{ $nosoal }}</button>
+                            </div>
+                            <div class="col-6 d-flex flex-row-reverse">
+                                <button type="button" class="btn btn-outline-primary">02:00:00</button>
                             </div>
                         </div>
                     </div>
-                    <form action="{{ url() }}" method="POST">
-                        <section class="section">
-                            <div class="container-fluid">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="panel">
-                                            <div class="panel-heading">
-                                                <div class="panel-title">
-                                                    <h4 class="mt-10">Soal No : <button class="btn btn-info"><?= $no ?></button>
-                                                        <div class="btn-group" style="float: right;">
-                                                            <button class="btn btn-default">Sisa Waktu : </button>
-                                                            <button class="btn btn-info" id="demo"></button>
-                                                        </div>
-                                                    </h4>
-                                                    <hr>
-                                                    <?php
-                                                    $es = explode('#', $rekaman);
-                                                    $akhir = count($es);
-                                                    $ia = explode('-', $es[$no]);
-                                                    $soal = $this->Msoal->getPertanyaan($ia[0]);
-                                                    $jw = explode('#_#', $soal->jawaban);
-                                                    ?>
-                                                    <input type="hidden" name="soal" value="<?= $ia[0] ?>">
-                                                    <input type="hidden" name="no_soal" value="<?= $no ?>">
-                                                    <p>
-                                                    <h5><?= $soal->pertanyaan ?></h5>
-                                                    </p>
-                                                    <?php for ($j = 1; $j <= 5; $j++) {
-                                                        $jawaban = explode("_#_", $jw[$j]);
-                                                        if ($jawaban[1] != "") {
-                                                    ?>
-                                                            <table width="100%">
-                                                                <tr>
-                                                                    <td valign="top" width="5%"><input type="radio" name="jawaban" class="blue-style" value="<?= $jawaban[0] ?>" <?php if ($jawaban[0] == $ia[1]) {
-                                                                                                                                                                                        echo "checked";
-                                                                                                                                                                                    } ?>></td>
-                                                                    <td valign="top" width="95%"><?= $jawaban[1] ?></td>
-                                                                </tr>
-                                                            </table>
-                                                    <?php }
-                                                    } ?>
-        
-                                                    <?php
-                                                    if ($no != 1) {
-                                                    ?>
-                                                        <button type="submit" class="btn btn-primary" value="<?= $no - 1 ?>" name="no">
-                                                            < Sebelumnya</button>
-                                                            <?php } else {
-                                                            ?>
-                                                                <button class="btn btn-primary" disabled>
-                                                                    < Sebelumnya</button>
-                                                                    <?php
-                                                                }
-                                                                if ($no != $akhir - 1) { ?>
-                                                                        <button type="submit" class="btn btn-primary" style="float:right;" value="<?= $no + 1 ?>" name="no">Selanjutnya ></button>
-                                                                    <?php } else { ?>
-                                                                        <button type="submit" class="btn btn-danger" style="float:right;" value="akhir" name="no" onclick="return confirm('Yakin untuk mengakhiri test, test tidak dapat diulangi?')">Akhiri</button>
-                                                                    <?php } ?>
-        
-                                                                    <!-- Modal -->
-                                                                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                                                        <div class="modal-dialog" role="document">
-                                                                            <div class="modal-content">
-                                                                                <div class="modal-header">
-                                                                                    <h4 class="modal-title" id="myModalLabel">Nomor Soal <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></h4>
-                                                                                </div>
-                                                                                <div class="modal-body">
-                                                                                    <table width="100%" cellpadding="0" cellspacing="0">
-                                                                                        <tr>
-                                                                                            <?php
-                                                                                            for ($i = 1; $i < count($es); $i++) {
-                                                                                                $cia = explode('-', $es[$i]);
-                                                                                                $btn = "default";
-                                                                                                if ($no == $i) {
-                                                                                                    $btn = "info";
-                                                                                                } else if ($cia[1] != 0) {
-                                                                                                    $btn = "success";
-                                                                                                }
-                                                                                            ?>
-                                                                                                <td>
-                                                                                                    <button type="submit" name="no" value="<?= $i ?>" class="btn btn-<?= $btn ?> btn-xs btn-block"><?= $i ?></button>
-                                                                                                </td>
-                                                                                                <?php
-                                                                                                if ($i % 5 == 0) {
-                                                                                                    echo "</tr><tr>";
-                                                                                                }
-                                                                                                ?>
-        
-                                                                                            <?php
-        
-                                                                                            } ?>
-                                                                                        </tr>
-                                                                                    </table>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-        
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-                    </form>
                 </div>
             </div>
-            <!-- /.container-fluid -->
-        
-        
         </div>
-        <!-- /.main-page -->
-        
-        
-        <script>
-            // Set the date we're counting down to
-            var countDownDate = new Date("<?= $finish_at->format('M d, Y H:i:s') ?>").getTime();
-        
-            // Update the count down every 1 second
-            var x = setInterval(function() {
-        
-                // Get today's date and time
-                var now = new Date().getTime();
-        
-                // Find the distance between now and the count down date
-                var distance = countDownDate - now;
-        
-                // Time calculations for days, hours, minutes and seconds
-                var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-        
-                // Display the result in the element with id="demo"
-                document.getElementById("demo").innerHTML = ('00' + hours).slice(-2) + ":" +
-                    ('00' + minutes).slice(-2) + ":" + ('00' + seconds).slice(-2);
-        
-                // If the count down is finished, write some text
-                if (distance < 0) {
-                    clearInterval(x);
-                    document.getElementById("demo").innerHTML = "00:00:00";
-                    window.location.href = "<?= base_url('aksespeserta/soal_test/akhir') ?>";
-                }
-            }, 1000);
-        </script>
     </section>
-    <!-- list group with contextual & horizontal ends -->
-
+    @php
+        $es = explode('(_#_)', $pengerjaan->rekaman);
+        $akhir = count($es);
+        $ia = explode('(-)', $es[$nosoal]);
+        $jmluraian = count($ia);
+        $soal = App\Models\Soal::where('id', $ia[0])->first();
+        $jw = explode('[#_#]', $soal->jawaban);
+    @endphp    
+    <form action="{{ url('penugasanpd/'.$penugasan->id.'/edit') }}" method="GET">
+    <section class="section">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">                        
+                        <input type="hidden" name="soal" value="{{ $ia[0] }}">
+                        <input type="hidden" name="nosoal" value="{{ $nosoal }}">
+                        <h4 class="card-title">{!! $soal->soal !!}</h4>
+                    </div>
+                    <div class="card-body">
+                        @php
+                        for ($i = 0; $i <= 5; $i++) {
+                            if($jw[$i]!=""){
+                                $isiop = explode("[_#_]", $jw[$i]);
+                        @endphp
+                        <div class="form-check form-check-success">
+                            <input class="form-check-input" type="radio" name="opsi" value="{{ $isiop[0] }}" {{ ($isiop[0] == $ia[1]) ? "checked" : false }}>
+                            <label class="form-check-label" for="Success">
+                                {!! $isiop[1] !!}
+                            </label>
+                        </div>
+                        @php                        
+                            }
+                        } 
+                        @endphp
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-6">
+                                <button type="submit" class="btn icon icon-left btn-primary" value="{{ $nosoal-1 }}" name="no" {{ ($nosoal==1) ? "disabled" : false }}><i data-feather="arrow-left"></i> Sebelumnya</button>
+                            </div>
+                            <div class="col-6 d-flex flex-row-reverse">
+                                @if($nosoal==(count($es)-1))
+                                <button type="submit" class="btn icon icon-right btn-danger" value="akhir" name="no" onclick="return confirm('Yakin akan mengakhiri kuis ini?')">Akhiri <i data-feather="check-square"></i></button>
+                                @else
+                                <button type="submit" class="btn icon icon-right btn-primary" value="{{ $nosoal+1 }}" name="no">Selanjutnya <i data-feather="arrow-right"></i></button>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="section">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body d-flex justify-content-center">
+                        <button type="button" class="btn icon icon-left btn-success" data-toggle="modal"
+                        data-target="#exampleModalCenter"><i data-feather="grid"></i> Daftar Soal</button>
+                    <!-- Vertically Centered modal Modal -->
+                        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-dialog-centered modal-dialog-scrollable"
+                            role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalCenterTitle">Daftar Soal</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <i data-feather="x"></i>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <table width="100%" cellpadding="4" cellspacing="4">
+                                        <tr>
+                                            @php
+                                            for ($i = 1; $i < count($es); $i++) {
+                                                $cia = explode('(-)', $es[$i]);
+                                                $btn = "light";
+                                                if ($nosoal == $i) {
+                                                    $btn = "info";
+                                                } else if ($cia[1] != 0) {
+                                                    $btn = "success";
+                                                }
+                                            @endphp
+                                                <td>
+                                                    <button type="submit" name="no" value="<?= $i ?>" class="btn btn-<?= $btn ?> btn-xs btn-block"><?= $i ?></button>
+                                                </td>
+                                                @php
+                                                if ($i % 5 == 0) {
+                                                    echo "</tr><tr>";
+                                                }
+                                            } 
+                                            @endphp
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">
+                                    <i class="bx bx-x d-block d-sm-none"></i>
+                                    <span class="d-none d-sm-block">Tutup</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    </form>
+</div>
 @endsection

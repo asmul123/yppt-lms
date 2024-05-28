@@ -45,6 +45,11 @@
                             @include('layouts.tabpd')
                             <div class="card-header">
                                 <h1 class="card-title pl-1">Daftar Tugas</h1>
+                                @if ($penugasans->count()==0)
+                                    <p class="card-text text-ellipsis">
+                                        Belum ada tugas saat ini !
+                                    </p>
+                                @endif
                             </div>
                             @foreach($penugasans as $penugasan)
                             <div class="card border border-light">
@@ -57,7 +62,23 @@
                                     <div class="card border border-light">
                                             <div class="card-header">
                                                 <h3>{{ $penugasan->judultugas }}</h3>
-                                                <sup>Jatuh Tempo pada : {{ $penugasan->waktuselesai }}</sup>                                                
+                                                <sup>Jatuh Tempo pada : {{ $penugasan->waktuselesai }}</sup><br>
+                                                @php
+                                                $pengerjaan = App\Models\Pengerjaan::where('user_id', auth()->user()->id)->where('penugasan_id', $penugasan->id)->first();
+                                                    if($pengerjaan){
+                                                        if ($pengerjaan->status == '1'){
+                                                            echo "<span class='badge bg-primary'>Status Pengerjaan : Sedang Dikerjakan</span>";
+                                                        } else if ($pengerjaan->status == '2'){
+                                                            echo "<span class='badge bg-success'>Status Pengerjaan : Selesai</span>";
+                                                        } else if ($pengerjaan->status == '3'){
+                                                            echo "<span class='badge bg-danger'>Status Pengerjaan : Diblokir</span>";
+                                                        }
+                                                    } else if($penugasan->waktuselesai < date('Y-m-d H:i:s')){
+                                                        echo "<span class='badge bg-danger'>Status Pengerjaan : Tugas Ditutup</span>";
+                                                    } else {
+                                                        echo "<span class='badge bg-warning'>Status Pengerjaan : Belum Mengerjakan</span>";
+                                                    }
+                                                @endphp                                                
                                             </div>
                                             <div class="card-body">
                                                 <a href="{{ url('/penugasanpd/'.$penugasan->id) }}" class="btn btn-outline-primary">Lihat Tugas</a>
@@ -75,27 +96,4 @@
             </div>
         </div>
     </section>
-    <!-- list group with contextual & horizontal ends -->
-    <section id="bg-variants">
-        <div class="row">
-            <div class="col-xl-12 col-sm-12 col-12">
-                <div class="card">
-                    <div class="card-content">
-                        <div class="row no-gutters">
-                            <div class="col-lg-12 col-12 text-center">
-                                <div class="card-body">
-                                    @if ($penugasans->count()==0)
-                                    <p class="card-text text-ellipsis">
-                                        Belum ada tugas saat ini !
-                                    </p>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Background variants section end -->
 @endsection
