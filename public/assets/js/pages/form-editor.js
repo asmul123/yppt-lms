@@ -23,9 +23,10 @@ var quill = new Quill("#full", {
             ["clean"],
         ],
     },
-    placeholder: "Tulis Komentar",
+    placeholder: "Tulis Deskripsi",
     theme: "snow",
 });
+
 var form = document.querySelector("form");
 var hiddenInput = document.querySelector("#hiddenInput");
 

@@ -7,6 +7,7 @@ use App\Models\Tahunpelajaran;
 use App\Models\Anggotarombel;
 use App\Models\Penugasan;
 use App\Models\Jenispenugasan;
+use App\Models\Diskusi;
 use Illuminate\Http\Request;
 
 class PembelajaranpdController extends Controller
@@ -74,6 +75,7 @@ class PembelajaranpdController extends Controller
                 'tab' => 'diskusi',
                 'tapels' => Tahunpelajaran::orderBy('tapel_code','asc')->get(),
                 'pembelajaran' => $pembelajaranpd,
+                'diskusis' => Diskusi::where('pembelajaran_id', $pembelajaranpd->id)->orderBy('created_at', 'desc')->get(),
                 'penugasans' => Penugasan::where('pembelajaran_id', $pembelajaranpd->id)->get()
             ]);
         }

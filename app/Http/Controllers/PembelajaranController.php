@@ -10,6 +10,7 @@ use App\Models\Jenispenugasan;
 use App\Models\Tahunpelajaran;
 use App\Models\Rombonganbelajar;
 use App\Models\Anggotarombel;
+use App\Models\Diskusi;
 use Illuminate\Http\Request;
 
 class PembelajaranController extends Controller
@@ -101,6 +102,7 @@ class PembelajaranController extends Controller
                 'tab' => 'diskusi',
                 'tapels' => Tahunpelajaran::orderBy('tapel_code','asc')->get(),
                 'pembelajaran' => $pembelajaran,
+                'diskusis' => Diskusi::where('pembelajaran_id', $pembelajaran->id)->orderBy('updated_at', 'desc')->get(),
                 'penugasans' => Penugasan::where('pembelajaran_id', $pembelajaran->id)->get()
             ]);
         } else if ($request->tab=="banksoal"){

@@ -42,3 +42,36 @@ ALTER TABLE `administrasikaprodis`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 COMMIT;
 
+CREATE TABLE `diskusis` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `pembelajaran_id` int(5) NOT NULL,
+  `diskusi` varchar(255) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+ALTER TABLE `diskusis`
+  ADD PRIMARY KEY (`id`);
+
+
+ALTER TABLE `diskusis`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+   CREATE TABLE `tanggapans` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `diskusi_id` int(5) NOT NULL,
+  `tanggapan` varchar(255) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+ALTER TABLE `tanggapans`
+  ADD PRIMARY KEY (`id`);
+
+
+ALTER TABLE `tanggapans`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
