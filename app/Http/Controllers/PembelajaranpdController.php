@@ -8,6 +8,7 @@ use App\Models\Anggotarombel;
 use App\Models\Penugasan;
 use App\Models\Jenispenugasan;
 use App\Models\Diskusi;
+use App\Models\Kehadiran;
 use Illuminate\Http\Request;
 
 class PembelajaranpdController extends Controller
@@ -77,6 +78,15 @@ class PembelajaranpdController extends Controller
                 'pembelajaran' => $pembelajaranpd,
                 'diskusis' => Diskusi::where('pembelajaran_id', $pembelajaranpd->id)->orderBy('created_at', 'desc')->get(),
                 'penugasans' => Penugasan::where('pembelajaran_id', $pembelajaranpd->id)->get()
+            ]);
+        } else if ($request->tab=="kehadiran"){
+            return view('kehadiranpd', [
+                'menu' => 'pembelajaran',
+                'tab' => 'kehadiran',
+                'tapels' => Tahunpelajaran::orderBy('tapel_code','asc')->get(),
+                'pembelajaran' => $pembelajaranpd,
+                'kehadirans' => Kehadiran::where('pembelajaran_id', $pembelajaranpd->id)->get(),
+                
             ]);
         }
     }

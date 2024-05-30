@@ -32,14 +32,15 @@ class KehadiranController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'pembelajaran_id' => 'required',
             'tanggal' => 'required',
             'keterangan' => 'required'
         ]);
         $berhasil=0;
-        $validated['user_id'] = auth()->user()->id;
-        $pembelajaran = Pembelajaran::where('id', $request->pembelajaran_id)->first();        
-        Kehadiran::create($validated);
+        if($request->pembelajaran_id){
+            $validated['user_id'] = auth()->user()->id;
+            $validated['pembelajaran_id'] = $request->pembelajaran_id;
+            $pembelajaran = Pembelajaran::where('id', $request->pembelajaran_id)->first();        
+            Kehadiran::create($validated);
             $kehadiran_id = Kehadiran::where('pembelajaran_id', $request->pembelajaran_id)->where('tanggal',$request->tanggal)->orderBy('id', 'desc')->first()->id;
             if($kehadiran_id != NULL){
                 $anggotarombels = Anggotarombel::where('rombonganbelajar_id', $pembelajaran->rombonganbelajar_id)->get();
@@ -51,8 +52,21 @@ class KehadiranController extends Controller
                     $berhasil++;
                 }
             }
-        
-            return redirect()->back()->with('success', 'Berhasil menambahkan '.$berhasil.' Kehadiran Peserta didik');
+            return redirect()->back()->with('success', 'Berhasil menambahkan '.$berhasil.' kehadiran peserta didik');
+        } else if($request->kehadiran_id){
+            // dd($request);
+            // echo $request->diskusi_id;
+            Kehadiran::where('id',$request->kehadiran_id)->update($validated);
+            $pembelajaran_id = Kehadiran::where('id', $request->kehadiran_id)->first()->pembelajaran_id;
+            $pembelajaran = Pembelajaran::where('id', $pembelajaran_id)->first();        
+                    $anggotarombels = Anggotarombel::where('rombonganbelajar_id', $pembelajaran->rombonganbelajar_id)->get();
+                    foreach($anggotarombels as $ar){
+                        $data['kehadiran'] = $request->{'kehadiran'.$ar->id};
+                        Kehadirandetail::where('kehadiran_id',$request->kehadiran_id)->where('user_id',$ar->user_id)->update($data);
+                        $berhasil++;
+                    }
+            return redirect()->back()->with('success', 'Berhasil mangubah '.$berhasil.' kehadiran peserta didik');
+        }        
     }
 
     /**
@@ -60,7 +74,14 @@ class KehadiranController extends Controller
      */
     public function show(Kehadiran $kehadiran)
     {
-        //
+        //return response
+        $kehadirandetail = Kehadirandetail::where('kehadiran_id', $kehadiran->id)->get();
+        return response()->json([
+            'success' => true,
+            'message' => 'Detail Data Post',
+            'data'    => $kehadiran, 
+            'detail'    => $kehadirandetail  
+        ]);
     }
 
     /**
@@ -84,6 +105,13 @@ class KehadiranController extends Controller
      */
     public function destroy(Kehadiran $kehadiran)
     {
-        //
+        $cekuser = Kehadiran::where('id', $kehadiran->id)->first()->user_id;
+        if($cekuser == auth()->user()->id){
+            Kehadiran::destroy($kehadiran->id);
+            Kehadirandetail::where('kehadiran_id',$kehadiran->id)->delete();
+            return redirect()->back()->with('success', 'Kehadiran berhasil dihapus');
+        } else{
+            return redirect()->back()->with('failed', 'Anda tidak dapat menghapus Kehadiran ini');
+        }
     }
 }
