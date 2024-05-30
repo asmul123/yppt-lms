@@ -26,6 +26,7 @@ use App\Http\Controllers\DokumenkurikulumController;
 use App\Http\Controllers\DokumenkaprodiController;
 use App\Http\Controllers\DiskusiController;
 use App\Http\Controllers\TanggapanController;
+use App\Http\Controllers\KehadiranController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -75,3 +76,4 @@ Route::resource('/dokumenkurikulum', DokumenkurikulumController::class)->middlew
 Route::resource('/dokumenkaprodi', DokumenkaprodiController::class)->middleware('auth');
 Route::resource('/diskusi', DiskusiController::class)->middleware('auth');
 Route::resource('/tanggapan', TanggapanController::class)->middleware('auth');
+Route::resource('/kehadiran', KehadiranController::class)->middleware('auth');

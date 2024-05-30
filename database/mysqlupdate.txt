@@ -45,7 +45,7 @@ COMMIT;
 CREATE TABLE `diskusis` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `pembelajaran_id` int(5) NOT NULL,
-  `diskusi` varchar(255) NOT NULL,
+  `diskusi` longtext NOT NULL,
   `user_id` int(11) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -62,7 +62,7 @@ ALTER TABLE `diskusis`
    CREATE TABLE `tanggapans` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `diskusi_id` int(5) NOT NULL,
-  `tanggapan` varchar(255) NOT NULL,
+  `tanggapan` longtext NOT NULL,
   `user_id` int(11) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -75,3 +75,98 @@ ALTER TABLE `tanggapans`
 
 ALTER TABLE `tanggapans`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+
+  CREATE TABLE `kehadirans` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `pembelajaran_id` int(5) NOT NULL,
+  `tanggal` date NOT NULL,
+  `keterangan` text NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indeks untuk tabel `kehadirans`
+--
+ALTER TABLE `kehadirans`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT untuk tabel yang dibuang
+--
+
+--
+-- AUTO_INCREMENT untuk tabel `kehadirans`
+--
+ALTER TABLE `kehadirans`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  
+  CREATE TABLE `kehadirandetails` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `kehadiran_id` int(5) NOT NULL,
+  `kehadiran` char(1) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `kehadirandetails`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `kehadirans`
+--
+
+CREATE TABLE `kehadirans` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `pembelajaran_id` int(5) NOT NULL,
+  `tanggal` date NOT NULL,
+  `keterangan` text NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `kehadirans`
+--
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indeks untuk tabel `kehadirandetails`
+--
+ALTER TABLE `kehadirandetails`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeks untuk tabel `kehadirans`
+--
+ALTER TABLE `kehadirans`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT untuk tabel yang dibuang
+--
+
+--
+-- AUTO_INCREMENT untuk tabel `kehadirandetails`
+--
+ALTER TABLE `kehadirandetails`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- AUTO_INCREMENT untuk tabel `kehadirans`
+--
+ALTER TABLE `kehadirans`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;

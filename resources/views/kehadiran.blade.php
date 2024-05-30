@@ -57,7 +57,7 @@
                                                             <div class="col-md-12 col-12">
                                                                 <div class="form-group">
                                                                     <label for="first-name-column">Tanggal</label>
-                                                                    <input type="date" class="form-control"  name="tanggalkehadiran" value="{{ date('Y-m-d') }}">
+                                                                    <input type="date" class="form-control"  name="tanggal" value="{{ date('Y-m-d') }}">
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-12 col-12">
@@ -116,19 +116,62 @@
                                       <table class="table table-striped mb-0">
                                         <thead>
                                             <tr>
-                                                <th>#</th>
-                                                <th>Nama Peserta Didik</th>
-                                                <th>Kehadiran</th>
-                                                <th>Total</th>
+                                                <th rowspan="2">#</th>
+                                                <th rowspan="2">Nama Peserta Didik</th>
+                                                @php
+                                                    $detailkehadirans = App\Models\Kehadiran::where('pembelajaran_id', $pembelajaran->id)->get();
+                                                    $jml = $detailkehadirans->count();
+                                                @endphp
+                                                <th colspan="{{ $jml }}">Kehadiran</th>
+                                                <th colspan="4">Total</th>
+                                            </tr>
+                                            <tr>
+                                                @foreach($detailkehadirans as $dk)
+                                                <th>
+                                                    @php
+                                                    $tgl = strtotime($dk->tanggal);
+                                                    @endphp
+                                                    {{ date('d/m',$tgl) }}
+                                                </th>
+                                                @endforeach
+                                                <th>H</th>
+                                                <th>I</th>
+                                                <th>S</th>
+                                                <th>A</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach($anggotarombels as $anggotarombel)
+                                            @php
+                                            $h = 0;
+                                            $i = 0;
+                                            $s = 0;
+                                            $a = 0;
+                                            @endphp
                                             <tr>
                                                 <td class="align-top">{{ $anggotarombels->firstItem() + $loop->index }}</td>
                                                 <td>{{ $anggotarombel->user->name }}</td>
-                                                <td></td>
-                                                <td></td>
+                                                @foreach($detailkehadirans as $dk)
+                                                <td>
+                                                    @php
+                                                    $kehadiran = App\Models\Kehadirandetail::where('kehadiran_id', $dk->id)->where('user_id', $anggotarombel->user_id)->first()->kehadiran;
+                                                    if($kehadiran == 'H'){
+                                                        $h++;
+                                                    } else if($kehadiran == 'I'){
+                                                        $i++;
+                                                    } else if($kehadiran == 'S'){
+                                                        $s++;
+                                                    }else if($kehadiran == 'A'){
+                                                        $a++;
+                                                    }
+                                                    echo $kehadiran
+                                                    @endphp
+                                                </td>
+                                                @endforeach
+                                                <td>{{ $h }}</td>
+                                                <td>{{ $i }}</td>
+                                                <td>{{ $s }}</td>
+                                                <td>{{ $a }}</td>
                                             </tr>
                                             @endforeach
                                         </tbody>

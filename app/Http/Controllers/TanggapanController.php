@@ -30,13 +30,19 @@ class TanggapanController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'diskusi_id' => 'required',
             'tanggapan' => 'required'
             ]);
-        $validated['user_id'] = auth()->user()->id;
-        
-        Tanggapan::create($validated);
-        return redirect()->back()->with('success', 'Berhasil manambahkan tanggapan');
+            
+        if($request->diskusi_id){
+            $validated['user_id'] = auth()->user()->id;
+            $validated['diskusi_id'] = $request->diskusi_id;
+            Tanggapan::create($validated);
+            return redirect()->back()->with('success', 'Berhasil manambahkan tanggapan');
+        } else if($request->tanggapan_id){
+            // echo $request->diskusi_id;
+            Tanggapan::where('id',$request->tanggapan_id)->update($validated);
+            return redirect()->back()->with('success', 'Berhasil mangubah tanggapan');
+        }
     }
 
     /**
@@ -71,8 +77,14 @@ class TanggapanController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Tanggapan $tanggapan)
     {
-        //
+        $cekuser = Tanggapan::where('id', $tanggapan->id)->first()->user_id;
+        if($cekuser == auth()->user()->id){
+            Tanggapan::destroy($tanggapan->id);
+            return redirect()->back()->with('success', 'Tanggapan berhasil dihapus');
+        } else{
+            return redirect()->back()->with('failed', 'Anda tidak dapat menghapus Tanggapan ini');
+        }
     }
 }

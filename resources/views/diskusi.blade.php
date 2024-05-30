@@ -166,7 +166,7 @@
                 <div class="modal-body">            
                     <form method="post" action="{{ url('/tanggapan') }}" id="edittanggapanform">
                         @csrf
-                        <div id="editTanggapan"></div>
+                        <div id="editTanggapanf"></div>
                         <input type="hidden" name="tanggapan" id="tanggapandata">
                         <input type="hidden" name="tanggapan_id" id="tanggapanid">
                         <input type="submit" class="btn btn-outline-primary mt-1" value="Simpan">
@@ -217,6 +217,61 @@
                     tanggapan{{ $d->id }}.value = quillkom{{ $d->id }}.root.innerHTML;
                 }
         @endforeach
+    </script>
+        <script>
+        //button create post event        
+                    var snow = new Quill("#snow", {
+                    theme: "snow",
+                    });
+                    var bubble = new Quill("#bubble", {
+                        theme: "bubble",
+                    });
+                    var quilltedit = new Quill("#editTanggapanf", {
+                        bounds: "#editTanggapanf-container .editor",
+                        modules: {
+                            toolbar: [
+                                [{ font: [] }, { size: [] }],
+                                ["bold", "italic", "underline", "strike"],
+                                [{ color: [] }, { background: [] }],
+                                [{ script: "super" }, { script: "sub" }],
+                                [
+                                    { list: "ordered" },
+                                    { list: "bullet" },
+                                    { indent: "-1" },
+                                    { indent: "+1" },
+                                ],
+                                ["direction", { align: [] }],
+                                ["link", "image", "video"],
+                                ["clean"],
+                            ],
+                        },
+                        placeholder: "Edit Tanggapan",
+                        theme: "snow",
+                        });
+                        var edittanggapanform = document.querySelector("edittanggapanform");
+                        var isitanggapan = document.querySelector("#tanggapandata");
+                        
+                        document.getElementById("edittanggapanform").onsubmit = function () {
+                            isitanggapan.value = quilltedit.root.innerHTML;
+                        }
+                        
+        $('body').on('click', '#btn-edit-tanggapan', function () {
+                let tanggapan_id = $(this).data('id');
+                
+                //fetch detail tanggapan with ajax
+                $.ajax({
+                    url: "{{ url('/tanggapan') }}/"+tanggapan_id,
+                    type: "GET",
+                    cache: false,
+                    success:function(response){
+                        
+                        //fill data to form
+                        
+                        quilltedit.clipboard.dangerouslyPasteHTML(response.data.tanggapan);
+                        $('#tanggapanid').val(response.data.id);
+                    }
+                });
+        });
     </script>
         <script>
         //button create post event        
