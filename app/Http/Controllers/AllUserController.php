@@ -4,6 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Role;
+use App\Models\Administrasi;
+use App\Models\Administrasikaprodi;
+use App\Models\Aksesuser;
+use App\Models\Pembelajaran;
+use App\Models\Penugasan;
+use App\Models\Pengerjaan;
+use App\Models\Anggotarombel;
+use App\Models\Rombonganbelajar;
+use App\Models\Diskusi;
+use App\Models\Kehadiran;
+use App\Models\Kehadirandetail;
+use App\Models\Tanggapan;
+use App\Models\Banksoal;
+use App\Models\Soal;
 use Illuminate\Http\Request;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Illuminate\Support\Facades\Hash;
@@ -164,6 +178,42 @@ class AllUserController extends Controller
      */
     public function destroy(User $user)
     {
+        if($user->role_id == 2){            
+            Administrasikaprodi::where('user_id',$user->id)->delete();
+            Administrasi::where('user_id',$user->id)->delete();
+            Aksesuser::where('user_id',$user->id)->delete();
+            $banksoals = Banksoal::where('user_id',$user->id)->get();
+            foreach($banksoals as $banksoal){
+                Soal::where('banksoal_id',$banksoal->id)->delete();
+            }
+            Banksoal::where('user_id',$user->id)->delete();
+            $pembelajarans = Pembelajaran::where('user_id',$user->id)->get();
+            foreach($pembelajarans as $pembelajaran){
+                $penugasans = Penugasan::where('pembelajaran_id', $pembelajaran->id)->get();
+                foreach($penugasans as $penugasan){
+                    Pengerjaan::where('penugasan_id', $penugasan->id)->delete();
+                }
+                Penugasan::where('pembelajaran_id',$pembelajaran->id)->delete();
+                $kehadirans = Kehadiran::where('pembelajaran_id', $pembelajaran->id)->get();
+                foreach($kehadirans as $kehadiran){
+                    Kehadirandetail::where('kehadiran_id', $kehadiran->id)->delete();
+                }
+                Kehadiran::where('pembelajaran_id',$pembelajaran->id)->delete();
+            }
+            Pembelajaran::where('user_id', $user->id)->delete();
+            $data['user_id'] = NULL;
+                Rombonganbelajar::where('user_id',$user->id)->update($data);
+        } else if($user->role_id == 3){            
+            Pengerjaan::where('user_id', $user->id)->delete();
+            Kehadirandetail::where('user_id', $user->id)->delete();
+            Anggotarombel::where('user_id', $user->id)->delete();
+        }
+        $diskusis = Diskusi::where('user_id', $user->id)->get();
+        foreach($diskusis as $diskusi){
+            Tanggapan::where('diskusi_id',$diskusi->id)->delete();
+        }
+        Diskusi::where('user_id',$user->id)->delete();
+        Tanggapan::where('user_id',$user->id)->delete();
         User::destroy($user->id);
         return redirect()->back()->with('success', 'User berhasil dihapus');
     }
