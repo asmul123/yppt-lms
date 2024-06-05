@@ -42,7 +42,7 @@
             </div>
         </div>
     </section>
-    @if ($pembelajarans == "kosong")
+    @if ($kelas == "kosong")
     <section id="bg-variants">
         <div class="row">
             <div class="col-xl-12 col-sm-12 col-12">
@@ -113,27 +113,7 @@
                 {{ $pembelajarans->links() }}
             </div>
         </div>
-    </section>
-    <!-- Card Captions and Overlay section end -->
-    <section id="bg-variants">
-        <div class="row">
-            <div class="col-xl-12 col-sm-12 col-12">
-                <div class="card">
-                    <div class="card-content">
-                        <div class="row no-gutters">
-                            <div class="col-lg-12 col-12 text-center">
-                                <div class="card-body">
-                                    <a href="#" class="btn btn-info" data-toggle="modal" data-target="#tambah-tapel">Buat Kelas</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Background variants section end -->
-    
+    </section>    
     @endif
 
 @endsection

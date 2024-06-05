@@ -23,14 +23,16 @@ class PembelajaranpdController extends Controller
         if($rombel){
             $pembelajarans = Pembelajaran::where('rombonganbelajar_id', $rombel->rombonganbelajar_id)->orderBy('matapelajaran', 'asc');
             if (request('tapel_id')) {
-                $pembelajarans->where('tahunpelajaran_id', request('tapel_id'))->paginate(12)->withQueryString();
+                $pembelajarans->where('tahunpelajaran_id', request('tapel_id'));
                 $tapel_id = request('tapel_id');
             } else {
-                $pembelajarans->where('tahunpelajaran_id', $tapelaktif->id)->paginate(12)->withQueryString();
+                $pembelajarans->where('tahunpelajaran_id', $tapelaktif->id);
                 $tapel_id = $tapelaktif->id;
             }
+            $kelas = "ada";
         } else {
-            $pembelajarans = "kosong";
+            $pembelajarans = Pembelajaran::where('rombonganbelajar_id', 0);
+            $kelas = "kosong";
             $tapel_id = $tapelaktif->id;
         }
         if (request('search')) {
@@ -40,7 +42,8 @@ class PembelajaranpdController extends Controller
             'menu' => 'pembelajaranpd',
             'tapels' => Tahunpelajaran::orderBy('tapel_code','asc')->get(),
             'tapel_id' => $tapel_id,
-            'pembelajarans' => $pembelajarans
+            'kelas' => $kelas,
+            'pembelajarans' => $pembelajarans->paginate(12)->withQueryString()
         ]);
     }
 
