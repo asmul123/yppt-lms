@@ -66,7 +66,7 @@
                                                         <i data-feather="x"></i>
                                                         </button>
                                                     </div>
-                                                    <form action="{{ url('/soal') }}" method="post">
+                                                    <form action="{{ url('/soal') }}" method="post" id="formadd">
                                                         @csrf
                                                     <div class="modal-body">
                                                             <div class="row">
@@ -74,8 +74,9 @@
                                                                     <div class="card collapse-icon accordion-icon-rotate">
                                                                         <div class="card-header">                                                                            
                                                                             <div class="form-group">
-                                                                                <label for="first-name-column">Soal</label>
-                                                                                <textarea class="soal" name="soal" class="form-control"></textarea>
+                                                                                <label for="first-name-column">Soal</label>                                                                                                    
+                                                                                <div id="qsoal"></div>
+                                                                                <input type="hidden" name="soal" id="soal">
                                                                                 <input type="hidden" name="banksoal_id" value={{ $banksoal->id }}>
                                                                             </div>
                                                                         </div>
@@ -100,8 +101,9 @@
                                                                                         <div id="collapse{{ $i }}" class="collapse pt-1" aria-labelledby="heading{{ $i }}"
                                                                                             data-parent="#cardAccordion">
                                                                                             <div class="card-body">                                                                                                                                                                            
-                                                                                                <div class="form-group">
-                                                                                                    <textarea class="jawaban" name="jawaban{{ $i }}" class="form-control"></textarea>
+                                                                                                <div class="form-group">                                                                                                    
+                                                                                                    <div id="jawaban{{ $i }}"></div>
+                                                                                                    <input type="hidden" name="jawaban{{ $i }}" id="opt{{ $i }}">
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
@@ -189,7 +191,8 @@
                                                     <ol type="A">
                                                         @php
                                                         $op = explode("[#_#]", $soal->jawaban);
-                                                        for ($i = 0; $i <= 5; $i++) {
+                                                        $jmlop = count($op);
+                                                        for ($i = 0; $i < $jmlop; $i++) {
                                                             if($op[$i]!=""){
                                                                 $isiop = explode("[_#_]", $op[$i]);
                                                                 echo "<li>" . $isiop[1];
@@ -231,5 +234,80 @@
         </div>
     </section>
     <!-- list group with contextual & horizontal ends -->
+    <link rel="stylesheet" href="{{ url('/assets/vendors/quill/quill.bubble.css') }}">
+    <link rel="stylesheet" href="{{ url('/assets/vendors/quill/quill.snow.css') }}"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.css" integrity="sha384-K1E1xaIzoWihlXfiT5fcmLNabsnrl+dqc0errnRwtMX14tKRA9cCYNDGnXiHEZMs" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.js" integrity="sha384-IolEJdmwZJpJkyCvXBnmGt8wXcP3nvRjxBjPv7/PWW7oODJhZ+qiY1sDpwgjcKLT" crossorigin="anonymous"></script>                                   
+    <script src="{{ url('/assets/vendors/quill/quill.min.js') }}"></script>
+    <script>
+        var snow = new Quill("#snow", {
+            theme: "snow",
+        });
+        var bubble = new Quill("#bubble", {
+            theme: "bubble",
+        });
+        var formadd = document.querySelector("formadd");
+        
+        var quillsoal = new Quill("#qsoal", {
+            bounds: "#qsoal-container .editor",
+            formula: true,
+            modules: {
+                toolbar: [
+                    [{ font: [] }, { size: [] }],
+                    ["bold", "italic", "underline", "strike"],
+                    [{ color: [] }, { background: [] }],
+                    [{ script: "super" }, { script: "sub" }],
+                    [
+                        { list: "ordered" },
+                        { list: "bullet" },
+                        { indent: "-1" },
+                        { indent: "+1" },
+                    ],
+                    [{ align: [] }],
+                    ["link", "image", "video"],
+                    ["clean"]
+                ],
+            },
+            placeholder: "Tulis Soal",
+            theme: "snow",
+            });
 
+            var soal = document.querySelector("#soal");
+
+            @for($i = 'A'; $i < 'F'; $i++)
+            
+            var quill{{ $i }} = new Quill("#jawaban{{ $i }}", {
+            bounds: "#jawaban{{ $i }}-container .editor",
+            modules: {
+                toolbar: [
+                    [{ font: [] }, { size: [] }],
+                    ["bold", "italic", "underline", "strike"],
+                    [{ color: [] }, { background: [] }],
+                    [{ script: "super" }, { script: "sub" }],
+                    [
+                        { list: "ordered" },
+                        { list: "bullet" },
+                        { indent: "-1" },
+                        { indent: "+1" },
+                    ],
+                    ["direction", { align: [] }],
+                    ["table",],
+                    ["link", "image", "video"],
+                    ["clean"],
+                ],
+            },
+            placeholder: "Tulis Pilihan {{ $i }}",
+            theme: "snow",
+        });      
+        var opt{{ $i }} = document.querySelector("#opt{{ $i }}");
+        
+        @endfor
+        document.getElementById("formadd").onsubmit = function () {
+            soal.value = quillsoal.root.innerHTML;
+            @for($i = 'A'; $i < 'F'; $i++)
+            if(quill{{ $i }}.root.innerHTML != "<p><br></p>"){
+                opt{{ $i }}.value = quill{{ $i }}.root.innerHTML;
+            }
+            @endfor
+        }
+        </script>
 @endsection

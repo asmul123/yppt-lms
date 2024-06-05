@@ -80,7 +80,7 @@ class PenugasanpdController extends Controller
         } else {
             $cekpengerjaan = Pengerjaan::where('penugasan_id', $penugasanpd->id)->where('user_id', auth()->user()->id)->first();
             // dd($cekpengerjaan);
-            if($penugasanpd->waktuselesai < date('Y-m-d H:i:s') && $penugasanpd->terlambat == 0){
+            if($penugasanpd->waktuselesai < date('Y-m-d H:i:s') && $penugasanpd->terlambat == 0 && !$cekpengerjaan){
                 return view('statustugas', [
                     'menu' => 'pembelajaran',
                     'tab' => 'penugasan',

@@ -64,11 +64,13 @@
                                                                 <td>:</td>
                                                                 <td>{{ $status }}</td>
                                                             </tr>
+                                                            @if(isset($pengerjaan))
                                                             <tr>
                                                                 <td>Nilai</td>
                                                                 <td>:</td>
                                                                 <td>{{ number_format($pengerjaan->nilai,2) }}</td>
                                                             </tr>
+                                                            @endif
                                                         </table>
                                                 </div>
                                                 <div class="col-12 d-flex mt-3">

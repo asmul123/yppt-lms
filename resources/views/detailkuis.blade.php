@@ -75,8 +75,9 @@
                                                     {!! $soal->soal !!}<hr>
                                                     <ol type="A">
                                                         @php
-                                                        $op = explode("[#_#]", $soal->jawaban);
-                                                        for ($j = 0; $j <= 5; $j++) {
+                                                        $op = explode("[#_#]", $soal->jawaban);                                                        
+                                                        $jmlop = count($op);
+                                                        for ($j = 0; $j < $jmlop; $j++) {
                                                             if($op[$j]!=""){
                                                                 $isiop = explode("[_#_]", $op[$j]);
                                                                 echo "<li>" . $isiop[1];

@@ -41,8 +41,9 @@
                         <h4 class="card-title">{!! $soal->soal !!}</h4>
                     </div>
                     <div class="card-body">
-                        @php
-                        for ($i = 0; $i <= 5; $i++) {
+                        @php                        
+                        $jmlop = count($jw);
+                        for ($i = 0; $i < $jmlop; $i++) {
                             if($jw[$i]!=""){
                                 $isiop = explode("[_#_]", $jw[$i]);
                         @endphp

@@ -28,6 +28,7 @@ class SoalController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request);
         $validated = $request->validate([
             'soal' => 'required',
             'banksoal_id' => 'required',
