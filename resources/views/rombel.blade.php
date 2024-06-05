@@ -177,7 +177,7 @@
                                     <form action="{{ url('/') }}/rombonganbelajar/{{ $rombel->id }}" method="post">
                                         @method('delete')
                                         @csrf
-                                        <button class="badge icon bg-danger border-0" onclick="return confirm('Yakin akan menghapus user ini?')"><i data-feather="trash"></i></button>
+                                        <button class="badge icon bg-danger border-0" onclick="return confirm('Yakin akan menghapus rombongan belajar ini?')"><i data-feather="trash"></i></button>
                                     </form>
                                 </div>
                             </td>

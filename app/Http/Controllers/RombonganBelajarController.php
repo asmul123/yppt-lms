@@ -269,6 +269,7 @@ class RombonganBelajarController extends Controller
      */
     public function destroy(Rombonganbelajar $rombonganbelajar)
     {
+        Anggotarombel::where('rombonganbelajar_id',$rombonganbelajar->id)->delete();
         Rombonganbelajar::destroy($rombonganbelajar->id);
         return redirect()->back()->with('success', 'Rombongan belajar berhasil dihapus');
     }
