@@ -42,7 +42,28 @@
             </div>
         </div>
     </section>
-    @if ($pembelajarans->count()==0)
+    @if ($pembelajarans == "kosong")
+    <section id="bg-variants">
+        <div class="row">
+            <div class="col-xl-12 col-sm-12 col-12">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="row no-gutters">
+                            <div class="col-lg-12 col-12 text-center">
+                                <div class="card-body">
+                                    <p class="card-text text-ellipsis">
+                                        Anda masuk Rombongan Belajar
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Background variants section end -->
+    @elseif($pembelajarans->count() == 0)
     <section id="bg-variants">
         <div class="row">
             <div class="col-xl-12 col-sm-12 col-12">
@@ -62,7 +83,6 @@
             </div>
         </div>
     </section>
-    <!-- Background variants section end -->
     @else
     <section id="card-caps">
         <div class="row">

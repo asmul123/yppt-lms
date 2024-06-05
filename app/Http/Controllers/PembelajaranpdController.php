@@ -19,13 +19,18 @@ class PembelajaranpdController extends Controller
     public function index()
     {
         $tapelaktif = Tahunpelajaran::where('is_active', '1')->first();
-        $rombel = Anggotarombel::where('tahunpelajaran_id', $tapelaktif->id)->where('user_id', auth()->user()->id)->first();
-        $pembelajarans = Pembelajaran::where('rombonganbelajar_id', $rombel->rombonganbelajar_id)->orderBy('matapelajaran', 'asc');
-        if (request('tapel_id')) {
-            $pembelajarans->where('tahunpelajaran_id', request('tapel_id'));
-            $tapel_id = request('tapel_id');
+        $rombel = Anggotarombel::where('user_id', auth()->user()->id)->first();
+        if($rombel){
+            $pembelajarans = Pembelajaran::where('rombonganbelajar_id', $rombel->rombonganbelajar_id)->orderBy('matapelajaran', 'asc');
+            if (request('tapel_id')) {
+                $pembelajarans->where('tahunpelajaran_id', request('tapel_id'))->paginate(12)->withQueryString();
+                $tapel_id = request('tapel_id');
+            } else {
+                $pembelajarans->where('tahunpelajaran_id', $tapelaktif->id)->paginate(12)->withQueryString();
+                $tapel_id = $tapelaktif->id;
+            }
         } else {
-            $pembelajarans->where('tahunpelajaran_id', $tapelaktif->id);
+            $pembelajarans = "kosong";
             $tapel_id = $tapelaktif->id;
         }
         if (request('search')) {
@@ -35,7 +40,7 @@ class PembelajaranpdController extends Controller
             'menu' => 'pembelajaranpd',
             'tapels' => Tahunpelajaran::orderBy('tapel_code','asc')->get(),
             'tapel_id' => $tapel_id,
-            'pembelajarans' => $pembelajarans->paginate(12)->withQueryString()
+            'pembelajarans' => $pembelajarans
         ]);
     }
 

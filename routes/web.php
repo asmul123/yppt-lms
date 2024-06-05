@@ -44,8 +44,6 @@ Route::get('/login', [LoginController::class, 'index'])->name('login')->middlewa
 Route::post('/login', [LoginController::class, 'authenticate']);
 Route::post('/logout', [LoginController::class, 'logout']);
 
-Route::get('/register', [RegisterController::class, 'index']);
-
 Route::get('/', [DashboardController::class, 'index'])->middleware('auth');
 Route::get('/akun', [UserController::class, 'ubahpassword'])->middleware('auth');
 Route::post('/akun', [UserController::class, 'passwordupdate'])->middleware('auth');

@@ -22,7 +22,7 @@
                                 </p>
                             </div>
                             <div class="overlay-status">
-                                <a href="#" class="btn btn-outline-white btn-sm">Lihat</a>
+                                <a href="{{ url('users?role_id=3') }}" class="btn btn-outline-white btn-sm">Lihat</a>
                             </div>
                         </div>
                     </div>
@@ -40,7 +40,7 @@
                                 </p>
                             </div>
                             <div class="overlay-status">
-                                <a href="#" class="btn btn-outline-white btn-sm">Lihat</a>
+                                <a href="{{ url('users?role_id=2') }}" class="btn btn-outline-white btn-sm">Lihat</a>
                             </div>
                         </div>
                     </div>
@@ -58,7 +58,7 @@
                                 </p>
                             </div>
                             <div class="overlay-status">
-                                <a href="#" class="btn btn-outline-white btn-sm">Lihat</a>
+                                <a href="{{ url('users?role_id=4') }}" class="btn btn-outline-white btn-sm">Lihat</a>
                             </div>
                         </div>
                     </div>
@@ -76,7 +76,7 @@
                                 </p>
                             </div>
                             <div class="overlay-status">
-                                <a href="#" class="btn btn-outline-white btn-sm">Lihat</a>
+                                <a href="{{ url('rombonganbelajar') }}" class="btn btn-outline-white btn-sm">Lihat</a>
                             </div>
                         </div>
                     </div>
@@ -96,7 +96,7 @@
                                 </p>
                             </div>
                             <div class="overlay-status">
-                                <a href="#" class="btn btn-outline-white btn-sm">Lihat</a>
+                                <a href="{{ url('hakakses/1') }}" class="btn btn-outline-white btn-sm">Lihat</a>
                             </div>
                         </div>
                     </div>
@@ -114,7 +114,7 @@
                                 </p>
                             </div>
                             <div class="overlay-status">
-                                <a href="#" class="btn btn-outline-white btn-sm">Lihat</a>
+                                <a href="hakakses/2" class="btn btn-outline-white btn-sm">Lihat</a>
                             </div>
                         </div>
                     </div>
@@ -132,7 +132,7 @@
                                 </p>
                             </div>
                             <div class="overlay-status">
-                                <a href="#" class="btn btn-outline-white btn-sm">Lihat</a>
+                                <a href="hakakses/4" class="btn btn-outline-white btn-sm">Lihat</a>
                             </div>
                         </div>
                     </div>
@@ -150,7 +150,7 @@
                                 </p>
                             </div>
                             <div class="overlay-status">
-                                <a href="#" class="btn btn-outline-white btn-sm">Lihat</a>
+                                <a href="hakakses/3" class="btn btn-outline-white btn-sm">Lihat</a>
                             </div>
                         </div>
                     </div>
