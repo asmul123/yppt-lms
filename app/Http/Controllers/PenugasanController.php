@@ -104,6 +104,9 @@ class PenugasanController extends Controller
             'judultugas' => 'required',
             'jenispenugasan_id' => 'required'
         ]);
+        if($request->youtube != ""){
+            $validated['youtube'] = $request->youtube;
+        }
         $validated['user_id'] = auth()->user()->id;
         $gagal = 0;
         $berhasil = 0;

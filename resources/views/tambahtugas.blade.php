@@ -103,7 +103,14 @@
                                                         <input type="checkbox" name="acakjawaban" class='form-check-input' value="1">
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div>                                                                                            
+                                            @else
+                                            <div class="col-md-12 col-12">
+                                                <div class="form-group">
+                                                    <label for="city-column">Link Youtube <sub>(isi jika ingin memasukan link youtube unskipable)</sub></label>
+                                                    <input type="text" class="form-control" placeholder="Kosongkan bila tidak ada" name="youtube">
+                                                </div>
+                                            </div>                                                
                                             @endif
                                             <div class="col-md-12 col-12">
                                                 <div class="form-group">

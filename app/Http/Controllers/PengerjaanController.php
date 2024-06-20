@@ -20,7 +20,8 @@ class PengerjaanController extends Controller
      */
     public function create()
     {
-        //
+        session()->forget('penugasan');
+                return redirect('/');
     }
 
     /**

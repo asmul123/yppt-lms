@@ -14,6 +14,7 @@ class Penugasan extends Model
         'jenispenugasan_id',
         'judultugas',
         'deskripsitugas',
+        'youtube',
         'banksoal_id',
         'acaksoal',
         'acakjawaban',
