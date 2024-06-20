@@ -29,7 +29,7 @@ class DokumenkurikulumController extends Controller
         }
 
         return view('rekapadministrasiguru', [
-            'menu' => 'administrasi',
+            'menu' => 'administrasikurikulum',
             'smenu' => '',
             'tapel_id' => $tapel_id,
             'users' => $users->paginate(10)->withQueryString(),
@@ -77,7 +77,7 @@ class DokumenkurikulumController extends Controller
         $administrasis = Administrasi::where('dokumenkurikulum_id', $dokumenkurikulum->id)
                             ->where('pembelajaran_id', $request->pembelajaran_id);
         return view('administrasigurudetail', [
-        'menu' => 'administrasi',
+        'menu' => 'administrasikurikulum',
         'tab' => 'administrasi',
         'administrasis' => $administrasis->paginate(10)->withQueryString(),
         'pembelajaran' => $pembelajaran,

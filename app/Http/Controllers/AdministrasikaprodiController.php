@@ -27,7 +27,7 @@ class AdministrasikaprodiController extends Controller
         }
 
         return view('rekapadministrasikaprodi', [
-            'menu' => 'kaprodi',
+            'menu' => 'administrasikaprodi',
             'smenu' => '',
             'tapel_id' => $tapel_id,
             'kaprodis' => $kaprodis->paginate(10)->withQueryString(),

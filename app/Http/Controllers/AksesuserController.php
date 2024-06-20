@@ -40,6 +40,7 @@ class AksesuserController extends Controller
 		for ($i = 0; $i < $count; $i++) {
 			$user_id = $users_id[$i];
             $existingHakAkses = Aksesuser::where('tahunpelajaran_id', $validated['tahunpelajaran_id'])
+                                            ->where('hakakses_id', $request->hakakses_id)
                                             ->where('user_id', $user_id)->first();
             $validated['user_id'] = $user_id;
             if ($existingHakAkses) {

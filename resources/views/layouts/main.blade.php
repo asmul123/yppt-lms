@@ -31,7 +31,9 @@
     </div>
     @php
     $tapelaktifmenu = App\Models\Tahunpelajaran::where('is_active', '1')->first()->id;
-    $aksesusermenu = App\Models\Aksesuser::where('user_id',auth()->user()->id)->where('tahunpelajaran_id', $tapelaktifmenu)->first();
+    $akseskepsek = App\Models\Aksesuser::where('user_id',auth()->user()->id)->where('tahunpelajaran_id', $tapelaktifmenu)->where('hakakses_id', '1')->first();
+    $akseswaka = App\Models\Aksesuser::where('user_id',auth()->user()->id)->where('tahunpelajaran_id', $tapelaktifmenu)->where('hakakses_id', '2')->first();
+    $akseskaprog = App\Models\Aksesuser::where('user_id',auth()->user()->id)->where('tahunpelajaran_id', $tapelaktifmenu)->where('hakakses_id', '4')->first();
     @endphp
     <div class="sidebar-menu">
         <ul class="menu">
@@ -78,14 +80,14 @@
                     </ul>
                 </li>
                 @elseif(auth()->user()->role->id == 2)
-                    @if($aksesusermenu and $aksesusermenu->hakakses_id == 1)
-                        <li class="sidebar-item {{ ($menu === 'administrasi') ? 'active' : '' }}">
+                    @if($akseskepsek)
+                        <li class="sidebar-item {{ ($menu === 'administrasikurikulum') ? 'active' : '' }}">
                             <a href="{{ url('/dokumenkurikulum') }}" class='sidebar-link'>
                                 <i data-feather="archive" width="20"></i> 
                                 <span>Administrasi Guru</span>
                             </a>
                         </li>
-                        <li class="sidebar-item {{ ($menu === 'kaprodi') ? 'active' : '' }}">
+                        <li class="sidebar-item {{ ($menu === 'administrasikaprodi') ? 'active' : '' }}">
                             <a href="{{ url('/administrasikaprodi') }}" class='sidebar-link'>
                                 <i data-feather="archive" width="20"></i> 
                                 <span>Administrasi Kaprodi</span>
@@ -99,15 +101,16 @@
                         </a>
                     </li>                    
                     @endif
-                    @if($aksesusermenu and $aksesusermenu->hakakses_id == 4)
-                    <li class="sidebar-item {{ ($menu === 'administrasi') ? 'active' : '' }}">
+                    @if($akseskaprog)
+                    <li class="sidebar-item {{ ($menu === 'administrasikaprodi') ? 'active' : '' }}">
                         <a href="{{ url('/administrasikaprodi/create') }}" class='sidebar-link'>
                             <i data-feather="archive" width="20"></i> 
                             <span>Administrasi Kaprodi</span>
                         </a>
                     </li>
-                    @elseif($aksesusermenu and $aksesusermenu->hakakses_id == 2)
-                    <li class="sidebar-item {{ ($menu === 'administrasi') ? 'active' : '' }}">
+                    @endif
+                    @if($akseswaka)
+                    <li class="sidebar-item {{ ($menu === 'administrasikurikulum') ? 'active' : '' }}">
                         <a href="{{ url('/dokumenkurikulum') }}" class='sidebar-link'>
                             <i data-feather="archive" width="20"></i> 
                             <span>Administrasi Guru</span>

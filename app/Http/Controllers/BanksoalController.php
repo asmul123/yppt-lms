@@ -45,8 +45,13 @@ class BanksoalController extends Controller
             if ($existingKodeSoal) {
                 return redirect()->back()->with('failed', 'Gagal, Kode Soal telah ada');
             } else {
-                Banksoal::create($validated);
-                return redirect()->back()->with('success', 'Berhasil menambahkan bank soal');
+                if($request->banksoal_id){
+                    Banksoal::where('id',$request->banksoal_id)->update($validated);
+                    return redirect()->back()->with('success', 'Berhasil mengubah bank soal');
+                } else {
+                    Banksoal::create($validated);
+                    return redirect()->back()->with('success', 'Berhasil menambahkan bank soal');
+                }
             }
     }
 
@@ -70,7 +75,11 @@ class BanksoalController extends Controller
      */
     public function edit(Banksoal $banksoal)
     {
-        //
+        return response()->json([
+            'success' => true,
+            'message' => 'Detail Data Post',
+            'data'    => $banksoal  
+        ]); 
     }
 
     /**
@@ -86,6 +95,8 @@ class BanksoalController extends Controller
      */
     public function destroy(Banksoal $banksoal)
     {
-        //
+        Banksoal::destroy($banksoal->id);
+        Soal::where('banksoal_id', $banksoal->id)->delete();
+        return redirect()->back()->with('success', 'Bank soal berhasil dihapus');
     }
 }

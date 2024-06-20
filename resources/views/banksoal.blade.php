@@ -139,11 +139,11 @@
                                                 <td>
                                                     <div class="btn-group mb-3" role="group" aria-label="Basic example">
                                                         <a href="{{ url('/') }}/banksoal/{{ $banksoal->id }}" class="badge icon bg-success"><i data-feather="list"></i></a>
-                                                        <a href="{{ url('/') }}/banksoal/{{ $banksoal->id }}/edit" class="badge icon bg-warning"><i data-feather="edit"></i></a>
+                                                        <a href="#" class="badge icon bg-warning" data-toggle="modal" data-target="#editBanksoal" id="btn-edit-banksoal" data-id="{{ $banksoal->id }}"><i data-feather="edit"></i></a>
                                                         <form action="{{ url('/') }}/banksoal/{{ $banksoal->id }}" method="post">
                                                             @method('delete')
                                                             @csrf
-                                                            <button class="badge icon bg-danger border-0" onclick="return confirm('Yakin akan menghapus user ini?')"><i data-feather="trash"></i></button>
+                                                            <button class="badge icon bg-danger border-0" onclick="return confirm('Yakin akan menghapus banksoal ini?')"><i data-feather="trash"></i></button>
                                                         </form>
                                                     </div>
                                                 </td>
@@ -163,11 +163,71 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-12 col-md-12">
-                
-            </div>
         </div>
     </section>
     <!-- list group with contextual & horizontal ends -->
-
-@endsection
+    <div class="modal fade" id="editBanksoal" tabindex="-1" role="dialog" aria-labelledby="editBanksoalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-centered modal-dialog-scrollable"
+            role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalTitle">Edit Banksoal</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i data-feather="x"></i>
+                    </button>
+                </div>
+                <div class="modal-body">            
+                <form action="{{ url('/') }}/banksoal" method="post">
+                @csrf
+                <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12 col-12">
+                                <div class="form-group">
+                                    <label for="first-name-column">Kode Soal</label>
+                                    <input type="hidden" id="banksoalid" name="banksoal_id">
+                                    <input type="text" class="form-control" id="kodesoal" name="kodesoal" autofocus>
+                                </div>
+                                <div class="form-group">
+                                    <label for="first-name-column">Mata Pelajaran</label>
+                                    <select name="pembelajaran_id" class="form-control" id="pembelajaran_id">
+                                        <option value="">Pilih Mata Pelajaran</option>
+                                        @foreach($mapels as $mapel)
+                                        <option value="{{ $mapel->id }}">{{ $mapel->matapelajaran }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </diV>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light-primary" data-dismiss="modal">
+                            <i class="bx bx-x d-block d-sm-none"></i>
+                            <span class="d-none d-sm-block">Close</span>
+                        </button>
+                        <input type="submit" class="btn btn-primary ml-1" value="Simpan">
+                            <i class="bx bx-check d-block d-sm-none"></i>
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+<script>
+    $('body').on('click', '#btn-edit-banksoal', function () {
+                    let banksoal_id = $(this).data('id');
+                    
+                    //fetch detail tanggapan with ajax
+                    $.ajax({
+                        url: "{{ url('banksoal') }}/"+banksoal_id+"/edit",
+                        type: "GET",
+                        cache: false,
+                        success:function(response){
+                            $('#banksoalid').val(response.data.id);
+                            $('#kodesoal').val(response.data.kodesoal);
+                            $('#pembelajaran_id').val(response.data.pembelajaran_id);
+                        }
+                    });
+            });
+    </script>
+    @endsection
